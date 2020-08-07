@@ -5,7 +5,8 @@
     "keywords": [
         "mail",
         "mailer",
-        "message"
+        "message",
+        "email"
     ],
     "homepage": "https://github.com/maileryio/mailery-message-email",
     "license": "BSD-3-Clause",
@@ -18,7 +19,8 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4",
-        "foxy/foxy": "^1.0"
+        "foxy/foxy": "^1.0",
+        "maileryio/mailery-message": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
