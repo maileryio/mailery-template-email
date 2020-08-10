@@ -2,11 +2,11 @@
 
 **Email message module for Mailery Platform**
 
-[![Latest Stable Version](https://poser.pugx.org/maileryio/mailery-message-email/v/stable)](https://packagist.org/packages/maileryio/mailery-message-email)
-[![Total Downloads](https://poser.pugx.org/maileryio/mailery-message-email/downloads)](https://packagist.org/packages/maileryio/mailery-message-email)
-[![Build Status](https://travis-ci.com/maileryio/mailery-message-email.svg?branch=master)](https://travis-ci.com/maileryio/mailery-message-email)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/maileryio/mailery-message-email.svg)](https://scrutinizer-ci.com/g/maileryio/mailery-message-email/)
-[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/maileryio/mailery-message-email.svg)](https://scrutinizer-ci.com/g/maileryio/mailery-message-email/)
+[![Latest Stable Version](https://poser.pugx.org/maileryio/mailery-template-email/v/stable)](https://packagist.org/packages/maileryio/mailery-template-email)
+[![Total Downloads](https://poser.pugx.org/maileryio/mailery-template-email/downloads)](https://packagist.org/packages/maileryio/mailery-template-email)
+[![Build Status](https://travis-ci.com/maileryio/mailery-template-email.svg?branch=master)](https://travis-ci.com/maileryio/mailery-template-email)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/maileryio/mailery-template-email.svg)](https://scrutinizer-ci.com/g/maileryio/mailery-template-email/)
+[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/maileryio/mailery-template-email.svg)](https://scrutinizer-ci.com/g/maileryio/mailery-template-email/)
 
 Email message module for Mailery Platform
 
@@ -17,13 +17,13 @@ The preferred way to install this library is through [composer](http://getcompos
 Either run
 
 ```sh
-php composer.phar require "maileryio/mailery-message-email"
+php composer.phar require "maileryio/mailery-template-email"
 ```
 
 or add
 
 ```json
-"maileryio/mailery-message-email": "*"
+"maileryio/mailery-template-email": "*"
 ```
 
 to the require section of your composer.json.

@@ -3,8 +3,8 @@
 $date = date('Y');
 $header = <<<EOF
 Email message module for Mailery Platform
-@link      https://github.com/maileryio/mailery-message-email
-@package   Mailery\Message\Email
+@link      https://github.com/maileryio/mailery-template-email
+@package   Mailery\Template\Email
 @license   BSD-3-Clause
 @copyright Copyright (c) {$date}, Mailery (https://mailery.io/)
 EOF;

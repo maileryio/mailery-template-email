@@ -11,7 +11,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Mailery Email Message tests">
+        <testsuite name="Mailery Email Template tests">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
