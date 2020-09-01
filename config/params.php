@@ -15,7 +15,7 @@ use Mailery\Template\Email\Controller\TemplateController;
 use Yiisoft\Router\Route;
 
 return [
-    'maileryio/mailery-message' => [
+    'maileryio/mailery-template' => [
         'types' => [
             TemplateType::class => TemplateType::class,
         ],

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Mailery\Template\Email\Controller;
 
 use Mailery\Template\Email\WebController;
-use Psr\Http\Template\ResponseInterface as Response;
-use Psr\Http\Template\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Yiisoft\Http\Method;
 use Yiisoft\Router\UrlGeneratorInterface as UrlGenerator;
 use Mailery\Template\Email\Form\TemplateForm;
