@@ -4,15 +4,28 @@ declare(strict_types=1);
 
 namespace Mailery\Template\Email\Controller;
 
-use Mailery\Template\Email\WebController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Yiisoft\Http\Method;
 use Yiisoft\Router\UrlGeneratorInterface as UrlGenerator;
 use Mailery\Template\Email\Form\TemplateForm;
+use Mailery\Web\ViewRenderer;
 
-class TemplateController extends WebController
+class TemplateController
 {
+    /**
+     * @var ViewRenderer
+     */
+    private ViewRenderer $viewRenderer;
+
+    /**
+     * @param ViewRenderer $viewRenderer
+     */
+    public function __construct(ViewRenderer $viewRenderer)
+    {
+        $this->viewRenderer = $viewRenderer->withController($this);
+    }
+
     /**
      * @param Request $request
      * @param TemplateForm $messageForm
@@ -35,10 +48,12 @@ class TemplateController extends WebController
             $messageForm->loadFromServerRequest($request);
 
             if (($message = $messageForm->save()) !== null) {
-                return $this->redirect($urlGenerator->generate('/message/email/view', ['id' => $message->getId()]));
+                return $this->responseFactory
+                    ->createResponse(302)
+                    ->withHeader('Location', $urlGenerator->generate('/message/email/view', ['id' => $message->getId()]));
             }
         }
 
-        return $this->render('create', compact('messageForm', 'submitted'));
+        return $this->viewRenderer->render('create', compact('messageForm', 'submitted'));
     }
 }

@@ -11,8 +11,6 @@ declare(strict_types=1);
  */
 
 use Mailery\Template\Email\TemplateType;
-use Mailery\Template\Email\Controller\TemplateController;
-use Yiisoft\Router\Route;
 
 return [
     'maileryio/mailery-template' => [
@@ -24,13 +22,6 @@ return [
     'yiisoft/yii-cycle' => [
         'annotated-entity-paths' => [
             '@vendor/maileryio/mailery-template-email/src/Entity',
-        ],
-    ],
-
-    'router' => [
-        'routes' => [
-            '/message/email/create' => Route::methods(['GET', 'POST'], '/brand/{brandId:\d+}/message/email/create', [TemplateController::class, 'create'])
-                ->name('/message/email/create'),
         ],
     ],
 ];
