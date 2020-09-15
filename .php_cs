@@ -2,7 +2,7 @@
 
 $date = date('Y');
 $header = <<<EOF
-Email message module for Mailery Platform
+Email template module for Mailery Platform
 @link      https://github.com/maileryio/mailery-template-email
 @package   Mailery\Template\Email
 @license   BSD-3-Clause

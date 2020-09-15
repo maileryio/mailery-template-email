@@ -1,11 +1,11 @@
 {
     "name": "maileryio/mailery-template-email",
     "type": "library",
-    "description": "Email message module for Mailery Platform",
+    "description": "Email template module for Mailery Platform",
     "keywords": [
         "mail",
         "mailer",
-        "message",
+        "template",
         "email"
     ],
     "homepage": "https://github.com/maileryio/mailery-template-email",

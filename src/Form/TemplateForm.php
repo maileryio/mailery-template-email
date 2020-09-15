@@ -9,7 +9,7 @@ use Mailery\Brand\Entity\Brand;
 use Mailery\Brand\Service\BrandLocatorInterface as BrandLocator;
 use Mailery\Template\Email\Entity\Template;
 use Mailery\Template\Repository\TemplateRepository;
-use Mailery\Template\Email\Service\TemplateService;
+use Mailery\Template\Email\Service\TemplateCrudService;
 use Mailery\Template\Email\ValueObject\TemplateValueObject;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -29,37 +29,47 @@ class TemplateForm extends Form
     /**
      * @var Template|null
      */
-    private ?Template $message;
+    private ?Template $template;
 
     /**
-     * @var TemplateService
+     * @var TemplateCrudService
      */
-    private $messageService;
+    private $templateCrudService;
 
     /**
      * @param BrandLocator $brandLocator
-     * @param TemplateService $messageService
+     * @param TemplateCrudService $templateCrudService
      * @param ORMInterface $orm
      */
-    public function __construct(BrandLocator $brandLocator, TemplateService $messageService, ORMInterface $orm)
+    public function __construct(BrandLocator $brandLocator, TemplateCrudService $templateCrudService, ORMInterface $orm)
     {
         $this->orm = $orm;
         $this->brand = $brandLocator->getBrand();
-        $this->messageService = $messageService;
+        $this->templateCrudService = $templateCrudService;
         parent::__construct($this->inputs());
     }
 
     /**
-     * @param Template $message
+     * @param string $csrf
+     * @return \self
+     */
+    public function withCsrf(string $value, string $name = '_csrf'): self
+    {
+        $this->offsetSet($name, F::hidden($value));
+
+        return $this;
+    }
+
+    /**
+     * @param Template $template
      * @return self
      */
-    public function withTemplate(Template $message): self
+    public function withTemplate(Template $template): self
     {
-        $this->message = $message;
+        $this->template = $template;
         $this->offsetSet('', F::submit('Update'));
 
-        $this['name']->setValue($message->getSubject());
-        $this['description']->setValue($message->getDescription());
+        $this['name']->setValue($template->getSubject());
 
         return $this;
     }
@@ -76,13 +86,13 @@ class TemplateForm extends Form
         $valueObject = TemplateValueObject::fromForm($this)
             ->withBrand($this->brand);
 
-        if (($message = $this->message) === null) {
-            $message = $this->messageService->create($valueObject);
+        if (($template = $this->template) === null) {
+            $template = $this->templateCrudService->create($valueObject);
         } else {
-            $this->messageService->update($message, $valueObject);
+            $this->templateCrudService->update($template, $valueObject);
         }
 
-        return $message;
+        return $template;
     }
 
     /**
@@ -96,8 +106,8 @@ class TemplateForm extends Form
                     return;
                 }
 
-                $message = $this->getTemplateRepository()->findBySubject($value, $this->message);
-                if ($message !== null) {
+                $template = $this->getTemplateRepository()->findByName($value, $this->template);
+                if ($template !== null) {
                     $context->buildViolation('Template with this name already exists.')
                         ->atPath('name')
                         ->addViolation();
@@ -114,9 +124,8 @@ class TemplateForm extends Form
                 ->addConstraint($nameConstraint),
 //            'textContent' => F::textarea('Content (plaintext)'),
 //            'htmlContent' => F::textarea('Content (HTML)'),
-            'description' => F::textarea('Description'),
 
-            '' => F::submit($this->message === null ? 'Create' : 'Update'),
+            '' => F::submit($this->template === null ? 'Create' : 'Update'),
         ];
     }
 

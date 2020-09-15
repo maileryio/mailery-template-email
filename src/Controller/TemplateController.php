@@ -10,6 +10,9 @@ use Yiisoft\Http\Method;
 use Yiisoft\Router\UrlGeneratorInterface as UrlGenerator;
 use Mailery\Template\Email\Form\TemplateForm;
 use Mailery\Web\ViewRenderer;
+use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
+use Mailery\Template\Repository\TemplateRepository;
+use Mailery\Brand\Service\BrandLocatorInterface;
 
 class TemplateController
 {
@@ -19,22 +22,60 @@ class TemplateController
     private ViewRenderer $viewRenderer;
 
     /**
-     * @param ViewRenderer $viewRenderer
+     * @var ResponseFactory
      */
-    public function __construct(ViewRenderer $viewRenderer)
-    {
-        $this->viewRenderer = $viewRenderer->withController($this);
+    private ResponseFactory $responseFactory;
+
+    /**
+     * @var TemplateRepository
+     */
+    private TemplateRepository $templateRepo;
+
+    /**
+     * @param ViewRenderer $viewRenderer
+     * @param ResponseFactory $responseFactory
+     * @param BrandLocatorInterface $brandLocator
+     * @param TemplateRepository $templateRepo
+     */
+    public function __construct(
+        ViewRenderer $viewRenderer,
+        ResponseFactory $responseFactory,
+        BrandLocatorInterface $brandLocator,
+        TemplateRepository $templateRepo
+    ) {
+        $this->viewRenderer = $viewRenderer
+            ->withController($this)
+            ->withCsrf();
+
+        $this->responseFactory = $responseFactory;
+
+        $this->templateRepo = $templateRepo
+            ->withBrand($brandLocator->getBrand());
     }
 
     /**
      * @param Request $request
-     * @param TemplateForm $messageForm
+     * @return Response
+     */
+    public function view(Request $request): Response
+    {
+        $templateId = $request->getAttribute('id');
+        if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
+            return $this->responseFactory->createResponse(404);
+        }
+
+        return $this->viewRenderer->render('view', compact('template'));
+    }
+
+    /**
+     * @param Request $request
+     * @param TemplateForm $templateForm
      * @param UrlGenerator $urlGenerator
      * @return Response
      */
-    public function create(Request $request, TemplateForm $messageForm, UrlGenerator $urlGenerator): Response
+    public function create(Request $request, TemplateForm $templateForm, UrlGenerator $urlGenerator): Response
     {
-        $messageForm
+        $templateForm
             ->setAttributes([
                 'action' => $request->getUri()->getPath(),
                 'method' => 'post',
@@ -45,15 +86,52 @@ class TemplateController
         $submitted = $request->getMethod() === Method::POST;
 
         if ($submitted) {
-            $messageForm->loadFromServerRequest($request);
+            $templateForm->loadFromServerRequest($request);
 
-            if (($message = $messageForm->save()) !== null) {
+            if (($template = $templateForm->save()) !== null) {
                 return $this->responseFactory
                     ->createResponse(302)
-                    ->withHeader('Location', $urlGenerator->generate('/message/email/view', ['id' => $message->getId()]));
+                    ->withHeader('Location', $urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
             }
         }
 
-        return $this->viewRenderer->render('create', compact('messageForm', 'submitted'));
+        return $this->viewRenderer->render('create', compact('templateForm', 'submitted'));
+    }
+
+    /**
+     * @param Request $request
+     * @param TemplateForm $templateForm
+     * @param UrlGenerator $urlGenerator
+     * @return Response
+     */
+    public function edit(Request $request, TemplateForm $templateForm, UrlGenerator $urlGenerator): Response
+    {
+        $templateId = $request->getAttribute('id');
+        if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
+            return $this->responseFactory->createResponse(404);
+        }
+
+        $templateForm
+            ->withTemplate($template)
+            ->setAttributes([
+                'action' => $request->getUri()->getPath(),
+                'method' => 'post',
+                'enctype' => 'multipart/form-data',
+            ])
+        ;
+
+        $submitted = $request->getMethod() === Method::POST;
+
+        if ($submitted) {
+            $templateForm->loadFromServerRequest($request);
+
+            if ($templateForm->save() !== null) {
+                return $this->responseFactory
+                    ->createResponse(302)
+                    ->withHeader('Location', $urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
+            }
+        }
+
+        return $this->viewRenderer->render('edit', compact('template', 'templateForm', 'submitted'));
     }
 }

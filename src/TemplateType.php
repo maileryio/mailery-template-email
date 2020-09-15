@@ -27,7 +27,7 @@ class TemplateType implements TemplateTypeInterface
      */
     public function getCreateRouteName(): ?string
     {
-        return '/message/email/create';
+        return '/template/email/create';
     }
 
     /**

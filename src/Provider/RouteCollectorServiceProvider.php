@@ -20,8 +20,12 @@ final class RouteCollectorServiceProvider extends ServiceProvider
             Group::create(
                 '/brand/{brandId:\d+}',
                 [
-                    Route::methods(['GET', 'POST'], '/message/email/create', [TemplateController::class, 'create'])
-                        ->name('/message/email/create'),
+                    Route::get('/template/email/view', [TemplateController::class, 'view'])
+                        ->name('/template/email/view'),
+                    Route::methods(['GET', 'POST'], '/template/email/create', [TemplateController::class, 'create'])
+                        ->name('/template/email/create'),
+                    Route::methods(['GET', 'POST'], '/template/email/edit/{id:\d+}', [TemplateController::class, 'edit'])
+                        ->name('/template/email/edit'),
                 ]
             )
         );

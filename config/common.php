@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Email message module for Mailery Platform
+ * Email template module for Mailery Platform
  * @link      https://github.com/maileryio/mailery-template-email
  * @package   Mailery\Template
  * @license   BSD-3-Clause

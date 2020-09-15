@@ -1,6 +1,6 @@
-# Email message module for Mailery Platform
+# Email template module for Mailery Platform
 
-**Email message module for Mailery Platform**
+**Email template module for Mailery Platform**
 
 [![Latest Stable Version](https://poser.pugx.org/maileryio/mailery-template-email/v/stable)](https://packagist.org/packages/maileryio/mailery-template-email)
 [![Total Downloads](https://poser.pugx.org/maileryio/mailery-template-email/downloads)](https://packagist.org/packages/maileryio/mailery-template-email)
@@ -8,7 +8,7 @@
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/maileryio/mailery-template-email.svg)](https://scrutinizer-ci.com/g/maileryio/mailery-template-email/)
 [![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/maileryio/mailery-template-email.svg)](https://scrutinizer-ci.com/g/maileryio/mailery-template-email/)
 
-Email message module for Mailery Platform
+Email template module for Mailery Platform
 
 ## Installation
 

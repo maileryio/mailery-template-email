@@ -4,7 +4,8 @@ use Mailery\Widget\Form\FormRenderer;
 
 /** @var Mailery\Web\View\WebView $this */
 /** @var Psr\Http\Template\ServerRequestInterface $request */
-/** @var FormManager\Form $messageForm */
+/** @var FormManager\Form $templateForm */
+/** @var string $csrf */
 /** @var bool $submitted */
 $this->setTitle('New email template');
 
@@ -23,6 +24,6 @@ $this->setTitle('New email template');
 <div class="mb-2"></div>
 <div class="row">
     <div class="col-6">
-        <?= (new FormRenderer($messageForm))($submitted); ?>
+        <?= (new FormRenderer($templateForm->withCsrf($csrf)))($submitted); ?>
     </div>
 </div>

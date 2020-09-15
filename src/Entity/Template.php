@@ -18,19 +18,19 @@ class Template extends BaseTemplate implements RoutableEntityInterface, Loggable
      * @Cycle\Annotated\Annotation\Column(type = "text")
      * @var string
      */
-    private $textContent;
+//    private $textContent;
 
     /**
      * @Cycle\Annotated\Annotation\Column(type = "text")
      * @var string
      */
-    private $htmlContent;
+//    private $htmlContent;
 
     /**
      * @Cycle\Annotated\Annotation\Column(type = "text")
      * @var string
      */
-    private $mjmlContent;
+//    private $mjmlContent;
 
     /**
      * @return string
@@ -94,7 +94,7 @@ class Template extends BaseTemplate implements RoutableEntityInterface, Loggable
      */
     public function getEditRouteName(): ?string
     {
-        return '/message/email/edit';
+        return '/template/email/edit';
     }
 
     /**
@@ -110,7 +110,7 @@ class Template extends BaseTemplate implements RoutableEntityInterface, Loggable
      */
     public function getViewRouteName(): ?string
     {
-        return '/message/email/view';
+        return '/template/email/view';
     }
 
     /**
