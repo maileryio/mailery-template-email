@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Mailery\Template\Repository\TemplateRepository;
 use Mailery\Brand\Service\BrandLocatorInterface;
 
-class TemplateController
+class DefaultController
 {
     /**
      * @var ViewRenderer
@@ -48,9 +48,7 @@ class TemplateController
             ->withCsrf();
 
         $this->responseFactory = $responseFactory;
-
-        $this->templateRepo = $templateRepo
-            ->withBrand($brandLocator->getBrand());
+        $this->templateRepo = $templateRepo->withBrand($brandLocator->getBrand());
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Mailery\Template\Email\Service;
 
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Transaction;
-use Mailery\Template\Email\Entity\Template;
+use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Email\ValueObject\TemplateValueObject;
 
 class TemplateCrudService
@@ -24,11 +24,11 @@ class TemplateCrudService
 
     /**
      * @param TemplateValueObject $valueObject
-     * @return Template
+     * @return EmailTemplate
      */
-    public function create(TemplateValueObject $valueObject): Template
+    public function create(TemplateValueObject $valueObject): EmailTemplate
     {
-        $template = (new Template())
+        $template = (new EmailTemplate())
             ->setName($valueObject->getName())
             ->setBrand($valueObject->getBrand())
         ;
@@ -41,11 +41,11 @@ class TemplateCrudService
     }
 
     /**
-     * @param Template $template
+     * @param EmailTemplate $template
      * @param TemplateValueObject $valueObject
      * @return Template
      */
-    public function update(Template $template, TemplateValueObject $valueObject): Template
+    public function update(EmailTemplate $template, TemplateValueObject $valueObject): EmailTemplate
     {
         $template = $template
             ->setName($valueObject->getName())
@@ -60,10 +60,10 @@ class TemplateCrudService
     }
 
     /**
-     * @param Template $template
+     * @param EmailTemplate $template
      * @return bool
      */
-    public function delete(Template $template): bool
+    public function delete(EmailTemplate $template): bool
     {
         $tr = new Transaction($this->orm);
         $tr->delete($template);

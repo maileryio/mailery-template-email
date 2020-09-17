@@ -7,7 +7,7 @@ use FormManager\Factory as F;
 use FormManager\Form;
 use Mailery\Brand\Entity\Brand;
 use Mailery\Brand\Service\BrandLocatorInterface as BrandLocator;
-use Mailery\Template\Email\Entity\Template;
+use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Repository\TemplateRepository;
 use Mailery\Template\Email\Service\TemplateCrudService;
 use Mailery\Template\Email\ValueObject\TemplateValueObject;
@@ -27,9 +27,9 @@ class TemplateForm extends Form
     private ORMInterface $orm;
 
     /**
-     * @var Template|null
+     * @var EmailTemplate|null
      */
-    private ?Template $template;
+    private ?EmailTemplate $template;
 
     /**
      * @var TemplateCrudService
@@ -61,10 +61,10 @@ class TemplateForm extends Form
     }
 
     /**
-     * @param Template $template
+     * @param EmailTemplate $template
      * @return self
      */
-    public function withTemplate(Template $template): self
+    public function withTemplate(EmailTemplate $template): self
     {
         $this->template = $template;
         $this->offsetSet('', F::submit('Update'));
@@ -75,9 +75,9 @@ class TemplateForm extends Form
     }
 
     /**
-     * @return Template|null
+     * @return EmailTemplate|null
      */
-    public function save(): ?Template
+    public function save(): ?EmailTemplate
     {
         if (!$this->isValid()) {
             return null;
@@ -134,7 +134,7 @@ class TemplateForm extends Form
      */
     private function getTemplateRepository(): TemplateRepository
     {
-        return $this->orm->getRepository(Template::class)
+        return $this->orm->getRepository(EmailTemplate::class)
             ->withBrand($this->brand);
     }
 }

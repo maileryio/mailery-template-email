@@ -7,7 +7,7 @@ use Yiisoft\Di\Support\ServiceProvider;
 use Yiisoft\Router\RouteCollectorInterface;
 use Yiisoft\Router\Group;
 use Yiisoft\Router\Route;
-use Mailery\Template\Email\Controller\TemplateController;
+use Mailery\Template\Email\Controller\DefaultController;
 
 final class RouteCollectorServiceProvider extends ServiceProvider
 {
@@ -20,11 +20,11 @@ final class RouteCollectorServiceProvider extends ServiceProvider
             Group::create(
                 '/brand/{brandId:\d+}',
                 [
-                    Route::get('/template/email/view', [TemplateController::class, 'view'])
+                    Route::get('/template/email/view', [DefaultController::class, 'view'])
                         ->name('/template/email/view'),
-                    Route::methods(['GET', 'POST'], '/template/email/create', [TemplateController::class, 'create'])
+                    Route::methods(['GET', 'POST'], '/template/email/create', [DefaultController::class, 'create'])
                         ->name('/template/email/create'),
-                    Route::methods(['GET', 'POST'], '/template/email/edit/{id:\d+}', [TemplateController::class, 'edit'])
+                    Route::methods(['GET', 'POST'], '/template/email/edit/{id:\d+}', [DefaultController::class, 'edit'])
                         ->name('/template/email/edit'),
                 ]
             )

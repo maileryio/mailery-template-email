@@ -10,27 +10,21 @@ use Mailery\Common\Entity\RoutableEntityInterface;
 /**
  * @Cycle\Annotated\Annotation\Entity
  */
-class Template extends BaseTemplate implements RoutableEntityInterface, LoggableEntityInterface
+class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, LoggableEntityInterface
 {
     use LoggableEntityTrait;
 
     /**
-     * @Cycle\Annotated\Annotation\Column(type = "text")
+     * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
      * @var string
      */
-//    private $textContent;
+    private $textContent;
 
     /**
-     * @Cycle\Annotated\Annotation\Column(type = "text")
+     * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
      * @var string
      */
-//    private $htmlContent;
-
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "text")
-     * @var string
-     */
-//    private $mjmlContent;
+    private $htmlContent;
 
     /**
      * @return string
@@ -66,25 +60,6 @@ class Template extends BaseTemplate implements RoutableEntityInterface, Loggable
     public function setHtmlContent(string $htmlContent): self
     {
         $this->htmlContent = $htmlContent;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMjmlContent(): string
-    {
-        return $this->mjmlContent;
-    }
-
-    /**
-     * @param string $mjmlContent
-     * @return self
-     */
-    public function setMjmlContent(string $mjmlContent): self
-    {
-        $this->mjmlContent = $mjmlContent;
 
         return $this;
     }
