@@ -19,6 +19,10 @@ return [
         ],
     ],
 
+    'maileryio/mailery-template-email' => [
+        'editors' => [],
+    ],
+
     'yiisoft/yii-cycle' => [
         'annotated-entity-paths' => [
             '@vendor/maileryio/mailery-template-email/src/Entity',

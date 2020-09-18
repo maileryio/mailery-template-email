@@ -13,6 +13,7 @@ use Mailery\Template\Email\Service\TemplateCrudService;
 use Mailery\Template\Email\ValueObject\TemplateValueObject;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Mailery\Template\Email\Model\EmailEditorList;
 
 class TemplateForm extends Form
 {
@@ -34,18 +35,29 @@ class TemplateForm extends Form
     /**
      * @var TemplateCrudService
      */
-    private $templateCrudService;
+    private TemplateCrudService $templateCrudService;
+
+    /**
+     * @var EmailEditorList
+     */
+    private EmailEditorList $emailEditorList;
 
     /**
      * @param BrandLocator $brandLocator
      * @param TemplateCrudService $templateCrudService
+     * @param EmailEditorList $emailEditorList
      * @param ORMInterface $orm
      */
-    public function __construct(BrandLocator $brandLocator, TemplateCrudService $templateCrudService, ORMInterface $orm)
-    {
+    public function __construct(
+        BrandLocator $brandLocator,
+        TemplateCrudService $templateCrudService,
+        EmailEditorList $emailEditorList,
+        ORMInterface $orm
+    ) {
         $this->orm = $orm;
         $this->brand = $brandLocator->getBrand();
         $this->templateCrudService = $templateCrudService;
+        $this->emailEditorList = $emailEditorList;
         parent::__construct($this->inputs());
     }
 
@@ -69,7 +81,8 @@ class TemplateForm extends Form
         $this->template = $template;
         $this->offsetSet('', F::submit('Update'));
 
-        $this['name']->setValue($template->getSubject());
+        $this['name']->setValue($template->getName());
+        $this['editor']->setValue($template->getEditor());
 
         return $this;
     }
@@ -115,18 +128,37 @@ class TemplateForm extends Form
             },
         ]);
 
-        return [
+        $inputs = [
             'name' => F::text('Template name')
                 ->addConstraint(new Constraints\NotBlank())
                 ->addConstraint(new Constraints\Length([
                     'min' => 4,
                 ]))
                 ->addConstraint($nameConstraint),
-//            'textContent' => F::textarea('Content (plaintext)'),
-//            'htmlContent' => F::textarea('Content (HTML)'),
-
-            '' => F::submit($this->template === null ? 'Create' : 'Update'),
         ];
+
+        if ($this->template === null) {
+            $editorOptions = $this->getEditorOptions();
+
+            $inputs['editor'] = F::select('Editor', $editorOptions)
+                ->addConstraint(new Constraints\NotBlank())
+                ->addConstraint(new Constraints\Choice([
+                    'choices' => array_keys($editorOptions)
+                ]));
+            $inputs[''] = F::submit('Create');
+        } else {
+            $inputs[''] = F::submit('Update');
+        }
+
+        return $inputs;
+    }
+
+    /**
+     * @return array
+     */
+    private function getEditorOptions(): array
+    {
+        return $this->emailEditorList->getValueOptions();
     }
 
     /**

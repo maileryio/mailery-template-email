@@ -18,48 +18,23 @@ class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, Log
      * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
      * @var string
      */
-    private $textContent;
-
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
-     * @var string
-     */
-    private $htmlContent;
+    private $html;
 
     /**
      * @return string
      */
-    public function getTextContent(): string
+    public function getHtml(): string
     {
-        return $this->textContent;
+        return $this->html;
     }
 
     /**
-     * @param string $textContent
+     * @param string $html
      * @return self
      */
-    public function setTextContent(string $textContent): self
+    public function setHtml(string $html): self
     {
-        $this->textContent = $textContent;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHtmlContent(): string
-    {
-        return $this->htmlContent;
-    }
-
-    /**
-     * @param string $htmlContent
-     * @return self
-     */
-    public function setHtmlContent(string $htmlContent): self
-    {
-        $this->htmlContent = $htmlContent;
+        $this->htmlContent = $html;
 
         return $this;
     }
