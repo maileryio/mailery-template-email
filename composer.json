@@ -20,7 +20,8 @@
     "require": {
         "php": "^7.4",
         "foxy/foxy": "^1.0",
-        "maileryio/mailery-template": "dev-master"
+        "maileryio/mailery-template": "dev-master",
+        "maileryio/mailery-template-email-ckeditor": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
