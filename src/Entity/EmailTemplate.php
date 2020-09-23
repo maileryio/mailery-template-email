@@ -21,6 +21,12 @@ class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, Log
     private $html;
 
     /**
+     * @Cycle\Annotated\Annotation\Column(type = "string")
+     * @var string
+     */
+    private $editor;
+
+    /**
      * @return string
      */
     public function getHtml(): string
@@ -35,6 +41,25 @@ class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, Log
     public function setHtml(string $html): self
     {
         $this->htmlContent = $html;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditor(): string
+    {
+        return $this->editor;
+    }
+
+    /**
+     * @param string $editor
+     * @return self
+     */
+    public function setEditor(string $editor): self
+    {
+        $this->editor = $editor;
 
         return $this;
     }

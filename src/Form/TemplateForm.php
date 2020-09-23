@@ -14,6 +14,7 @@ use Mailery\Template\Email\ValueObject\TemplateValueObject;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Mailery\Template\Email\Model\EmailEditorList;
+use Psr\Http\Message\ServerRequestInterface;
 
 class TemplateForm extends Form
 {
@@ -113,6 +114,8 @@ class TemplateForm extends Form
      */
     private function inputs(): array
     {
+        $editorOptions = $this->getEditorOptions();
+
         $nameConstraint = new Constraints\Callback([
             'callback' => function ($value, ExecutionContextInterface $context) {
                 if (empty($value)) {
@@ -128,29 +131,20 @@ class TemplateForm extends Form
             },
         ]);
 
-        $inputs = [
+        return [
             'name' => F::text('Template name')
                 ->addConstraint(new Constraints\NotBlank())
                 ->addConstraint(new Constraints\Length([
                     'min' => 4,
                 ]))
                 ->addConstraint($nameConstraint),
-        ];
-
-        if ($this->template === null) {
-            $editorOptions = $this->getEditorOptions();
-
-            $inputs['editor'] = F::select('Editor', $editorOptions)
+            'editor' => F::select('Editor', $editorOptions, ['readonly' => 'readonly'])
                 ->addConstraint(new Constraints\NotBlank())
                 ->addConstraint(new Constraints\Choice([
                     'choices' => array_keys($editorOptions)
-                ]));
-            $inputs[''] = F::submit('Create');
-        } else {
-            $inputs[''] = F::submit('Update');
-        }
-
-        return $inputs;
+                ])),
+            '' => F::submit($this->template === null ? 'Create' : 'Update'),
+        ];
     }
 
     /**

@@ -5,8 +5,12 @@ namespace Mailery\Template\Email\Model;
 interface EmailEditorInterface
 {
     /**
-     * @param string|null $value
-     * @return bool
+     * @return string
      */
-    public function match(?string $value): bool;
+    public function getValue(): string;
+
+    /**
+     * @return string
+     */
+    public function getLabel(): string;
 }

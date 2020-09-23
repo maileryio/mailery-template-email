@@ -13,6 +13,11 @@ class TemplateValueObject
     private string $name;
 
     /**
+     * @var string
+     */
+    private string $editor;
+
+    /**
      * @var Brand
      */
     private Brand $brand;
@@ -26,6 +31,7 @@ class TemplateValueObject
         $new = new self();
 
         $new->name = $form['name']->getValue();
+        $new->editor = $form['editor']->getValue();
 
         return $new;
     }
@@ -36,6 +42,14 @@ class TemplateValueObject
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEditor(): string
+    {
+        return $this->editor;
     }
 
     /**

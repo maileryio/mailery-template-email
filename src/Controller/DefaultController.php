@@ -13,8 +13,6 @@ use Yiisoft\Yii\View\ViewRenderer;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Mailery\Template\Repository\TemplateRepository;
 use Mailery\Brand\Service\BrandLocatorInterface;
-use Mailery\Template\Email\Model\EditorList;
-use Mailery\Template\Email\Widget\CKEditorWidget;
 
 class DefaultController
 {

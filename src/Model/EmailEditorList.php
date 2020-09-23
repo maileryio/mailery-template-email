@@ -46,7 +46,7 @@ class EmailEditorList
     public function findByValue(?string $value): ?EmailEditorInterface
     {
         foreach ($this->items as $item) {
-            if ($item->match($value)) {
+            if ($item->getValue() === $value) {
                 return $item;
             }
         }

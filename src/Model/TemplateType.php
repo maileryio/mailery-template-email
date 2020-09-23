@@ -1,8 +1,8 @@
 <?php
 
-namespace Mailery\Template\Email;
+namespace Mailery\Template\Email\Model;
 
-use Mailery\Template\TemplateTypeInterface;
+use Mailery\Template\Model\TemplateTypeInterface;
 
 class TemplateType implements TemplateTypeInterface
 {
