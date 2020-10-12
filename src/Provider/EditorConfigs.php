@@ -2,7 +2,7 @@
 
 namespace Mailery\Template\Email\Provider;
 
-class EmailEditorConfigs
+class EditorConfigs
 {
     /**
      * @var array

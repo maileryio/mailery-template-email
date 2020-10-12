@@ -5,7 +5,7 @@ use Mailery\Widget\Form\FormRenderer;
 
 /** @var Yiisoft\Yii\WebView $this */
 /** @var Psr\Http\Message\ServerRequestInterface $request */
-/** @var Mailery\Subscriber\Entity\Group $template */
+/** @var Mailery\Template\Email\Entity\EmailTemplate $template */
 /** @var FormManager\Form $templateForm */
 /** @var string $csrf */
 /** @var bool $submitted */

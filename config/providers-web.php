@@ -1,9 +1,9 @@
 <?php
 
 use Mailery\Template\Email\Provider\RouteCollectorServiceProvider;
-use Mailery\Template\Email\Provider\EmailEditorServiceProvider;
+use Mailery\Template\Email\Provider\EditorServiceProvider;
 
 return [
     RouteCollectorServiceProvider::class => RouteCollectorServiceProvider::class,
-    EmailEditorServiceProvider::class => EmailEditorServiceProvider::class,
+    EditorServiceProvider::class => EditorServiceProvider::class,
 ];

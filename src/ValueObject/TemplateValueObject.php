@@ -4,6 +4,7 @@ namespace Mailery\Template\Email\ValueObject;
 
 use Mailery\Brand\Entity\Brand;
 use Mailery\Template\Email\Form\TemplateForm;
+use Mailery\Template\Email\Form\ContentForm;
 
 class TemplateValueObject
 {
@@ -16,6 +17,11 @@ class TemplateValueObject
      * @var string
      */
     private string $editor;
+
+    /**
+     * @var string
+     */
+    private string $content;
 
     /**
      * @var Brand
@@ -37,6 +43,19 @@ class TemplateValueObject
     }
 
     /**
+     * @param ContentForm $form
+     * @return self
+     */
+    public static function fromContentForm(ContentForm $form): self
+    {
+        $new = new self();
+
+        $new->content = $form['content']->getValue();
+
+        return $new;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -50,6 +69,14 @@ class TemplateValueObject
     public function getEditor(): string
     {
         return $this->editor;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
     }
 
     /**

@@ -18,7 +18,7 @@ class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, Log
      * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
      * @var string
      */
-    private $html;
+    private $content;
 
     /**
      * @Cycle\Annotated\Annotation\Column(type = "string")
@@ -29,18 +29,18 @@ class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, Log
     /**
      * @return string
      */
-    public function getHtml(): string
+    public function getContent(): string
     {
-        return $this->html;
+        return $this->content ?? '';
     }
 
     /**
-     * @param string $html
+     * @param string $content
      * @return self
      */
-    public function setHtml(string $html): self
+    public function setContent(string $content): self
     {
-        $this->htmlContent = $html;
+        $this->content = $content;
 
         return $this;
     }
@@ -92,6 +92,22 @@ class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, Log
      * {@inheritdoc}
      */
     public function getViewRouteParams(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPreviewRouteName(): ?string
+    {
+        return '/template/email/view';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPreviewRouteParams(): array
     {
         return ['id' => $this->getId()];
     }

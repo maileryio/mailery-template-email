@@ -3,23 +3,23 @@
 namespace Mailery\Template\Email\Model;
 
 use RuntimeException;
-use Mailery\Template\Email\Model\EmailEditorInterface;
+use Mailery\Template\Email\Model\EditorInterface;
 
-class EmailEditorList
+class EditorList
 {
     /**
-     * @var EmailEditorInterface[]
+     * @var EditorInterface[]
      */
     private array $items = [];
 
     /**
-     * @param EmailEditorInterface[] $items
+     * @param EditorInterface[] $items
      */
     public function __construct(array $items = [])
     {
         foreach ($items as $item) {
-            if (!$item instanceof EmailEditorInterface) {
-                throw new RuntimeException('Editor must be implement EmailEditorInterface');
+            if (!$item instanceof EditorInterface) {
+                throw new RuntimeException('Editor must be implement EditorInterface');
             }
         }
 
@@ -33,20 +33,20 @@ class EmailEditorList
     {
         $options = [];
         foreach ($this->items as $item) {
-            $options[$item->getValue()] = $item->getLabel();
+            $options[$item->getName()] = $item->getLabel();
         }
 
         return array_filter($options);
     }
 
     /**
-     * @param string|null $value
-     * @return EmailEditorInterface|null
+     * @param string|null $name
+     * @return EditorInterface|null
      */
-    public function findByValue(?string $value): ?EmailEditorInterface
+    public function findByName(?string $name): ?EditorInterface
     {
         foreach ($this->items as $item) {
-            if ($item->getValue() === $value) {
+            if ($item->getName() === $name) {
                 return $item;
             }
         }

@@ -13,8 +13,8 @@ use Mailery\Template\Email\Service\TemplateCrudService;
 use Mailery\Template\Email\ValueObject\TemplateValueObject;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Mailery\Template\Email\Model\EmailEditorList;
-use Psr\Http\Message\ServerRequestInterface;
+use Mailery\Template\Email\Model\EditorList;
+use Mailery\Template\Email\Factory\EditorFactory;
 
 class TemplateForm extends Form
 {
@@ -39,26 +39,34 @@ class TemplateForm extends Form
     private TemplateCrudService $templateCrudService;
 
     /**
-     * @var EmailEditorList
+     * @var EditorList
      */
-    private EmailEditorList $emailEditorList;
+    private EditorList $editorList;
+
+    /**
+     * @var EditorFactory
+     */
+    private EditorFactory $editorFactory;
 
     /**
      * @param BrandLocator $brandLocator
      * @param TemplateCrudService $templateCrudService
-     * @param EmailEditorList $emailEditorList
+     * @param EditorList $editorList
+     * @param EditorFactory $editorFactory
      * @param ORMInterface $orm
      */
     public function __construct(
         BrandLocator $brandLocator,
         TemplateCrudService $templateCrudService,
-        EmailEditorList $emailEditorList,
+        EditorList $editorList,
+        EditorFactory $editorFactory,
         ORMInterface $orm
     ) {
         $this->orm = $orm;
         $this->brand = $brandLocator->getBrand();
         $this->templateCrudService = $templateCrudService;
-        $this->emailEditorList = $emailEditorList;
+        $this->editorList = $editorList;
+        $this->editorFactory = $editorFactory;
         parent::__construct($this->inputs());
     }
 
@@ -83,7 +91,7 @@ class TemplateForm extends Form
         $this->offsetSet('', F::submit('Update'));
 
         $this['name']->setValue($template->getName());
-        $this['editor']->setValue($template->getEditor());
+        $this['editor']->setValue($template->getName())->setAttribute('readonly', true);
 
         return $this;
     }
@@ -138,7 +146,7 @@ class TemplateForm extends Form
                     'min' => 4,
                 ]))
                 ->addConstraint($nameConstraint),
-            'editor' => F::select('Editor', $editorOptions, ['readonly' => 'readonly'])
+            'editor' => F::select('Editor', $editorOptions)
                 ->addConstraint(new Constraints\NotBlank())
                 ->addConstraint(new Constraints\Choice([
                     'choices' => array_keys($editorOptions)
@@ -152,7 +160,7 @@ class TemplateForm extends Form
      */
     private function getEditorOptions(): array
     {
-        return $this->emailEditorList->getValueOptions();
+        return $this->editorList->getValueOptions();
     }
 
     /**

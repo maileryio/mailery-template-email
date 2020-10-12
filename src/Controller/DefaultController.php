@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Yiisoft\Http\Method;
 use Yiisoft\Router\UrlGeneratorInterface as UrlGenerator;
 use Mailery\Template\Email\Form\TemplateForm;
+use Mailery\Template\Email\Form\ContentForm;
 use Yiisoft\Yii\View\ViewRenderer;
 use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Mailery\Template\Repository\TemplateRepository;
@@ -54,16 +55,39 @@ class DefaultController
 
     /**
      * @param Request $request
+     * @param ContentForm $contentForm
+     * @param UrlGenerator $urlGenerator
      * @return Response
      */
-    public function view(Request $request): Response
+    public function view(Request $request, ContentForm $contentForm, UrlGenerator $urlGenerator): Response
     {
         $templateId = $request->getAttribute('id');
         if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
             return $this->responseFactory->createResponse(404);
         }
 
-        return $this->viewRenderer->render('view', compact('template'));
+        $contentForm
+            ->withTemplate($template)
+            ->setAttributes([
+                'action' => $request->getUri()->getPath(),
+                'method' => 'post',
+                'enctype' => 'multipart/form-data',
+            ])
+        ;
+
+        $submitted = $request->getMethod() === Method::POST;
+
+        if ($submitted) {
+            $contentForm->loadFromServerRequest($request);
+
+            if ($contentForm->save() !== null) {
+                return $this->responseFactory
+                    ->createResponse(302)
+                    ->withHeader('Location', $urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
+            }
+        }
+
+        return $this->viewRenderer->render('view', compact('template', 'contentForm', 'submitted'));
     }
 
     /**

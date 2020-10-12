@@ -63,6 +63,24 @@ class TemplateCrudService
 
     /**
      * @param EmailTemplate $template
+     * @param TemplateValueObject $valueObject
+     * @return Template
+     */
+    public function updateContent(EmailTemplate $template, TemplateValueObject $valueObject): EmailTemplate
+    {
+        $template = $template
+            ->setContent($valueObject->getContent())
+        ;
+
+        $tr = new Transaction($this->orm);
+        $tr->persist($template);
+        $tr->run();
+
+        return $template;
+    }
+
+    /**
+     * @param EmailTemplate $template
      * @return bool
      */
     public function delete(EmailTemplate $template): bool
