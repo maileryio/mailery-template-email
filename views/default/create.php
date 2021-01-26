@@ -3,7 +3,7 @@
 use Mailery\Widget\Form\FormRenderer;
 
 /** @var Yiisoft\Yii\WebView $this */
-/** @var Psr\Http\Template\ServerRequestInterface $request */
+/** @var Psr\Http\Message\ServerRequestInterface $request */
 /** @var FormManager\Form $templateForm */
 /** @var string $csrf */
 /** @var bool $submitted */
