@@ -2,7 +2,6 @@
 
 namespace Mailery\Template\Email\Form;
 
-use Cycle\ORM\ORMInterface;
 use FormManager\Factory as F;
 use FormManager\Form;
 use Mailery\Brand\Entity\Brand;
@@ -24,15 +23,15 @@ class TemplateForm extends Form
     private Brand $brand;
 
     /**
-     * @var ORMInterface
-     */
-    private ORMInterface $orm;
-
-    /**
      * @var EmailTemplate|null
      */
-    private ?EmailTemplate $template;
+    private ?EmailTemplate $template = null;
 
+    /**
+     * @var TemplateRepository
+     */
+    private TemplateRepository $templateRepo;
+    
     /**
      * @var TemplateCrudService
      */
@@ -50,20 +49,20 @@ class TemplateForm extends Form
 
     /**
      * @param BrandLocator $brandLocator
+     * @param TemplateRepository $templateRepo
      * @param TemplateCrudService $templateCrudService
      * @param EditorList $editorList
      * @param EditorFactory $editorFactory
-     * @param ORMInterface $orm
      */
     public function __construct(
         BrandLocator $brandLocator,
+        TemplateRepository $templateRepo,
         TemplateCrudService $templateCrudService,
         EditorList $editorList,
-        EditorFactory $editorFactory,
-        ORMInterface $orm
+        EditorFactory $editorFactory
     ) {
-        $this->orm = $orm;
         $this->brand = $brandLocator->getBrand();
+        $this->templateRepo = $templateRepo->withBrand($this->brand);
         $this->templateCrudService = $templateCrudService;
         $this->editorList = $editorList;
         $this->editorFactory = $editorFactory;
@@ -130,7 +129,7 @@ class TemplateForm extends Form
                     return;
                 }
 
-                $template = $this->getTemplateRepository()->findByName($value, $this->template);
+                $template = $this->templateRepo->findByName($value, $this->template);
                 if ($template !== null) {
                     $context->buildViolation('Template with this name already exists.')
                         ->atPath('name')
@@ -161,14 +160,5 @@ class TemplateForm extends Form
     private function getEditorOptions(): array
     {
         return $this->editorList->getValueOptions();
-    }
-
-    /**
-     * @return TemplateRepository
-     */
-    private function getTemplateRepository(): TemplateRepository
-    {
-        return $this->orm->getRepository(EmailTemplate::class)
-            ->withBrand($this->brand);
     }
 }
