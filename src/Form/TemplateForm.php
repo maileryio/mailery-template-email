@@ -31,7 +31,7 @@ class TemplateForm extends Form
      * @var TemplateRepository
      */
     private TemplateRepository $templateRepo;
-    
+
     /**
      * @var TemplateCrudService
      */
@@ -121,8 +121,6 @@ class TemplateForm extends Form
      */
     private function inputs(): array
     {
-        $editorOptions = $this->getEditorOptions();
-
         $nameConstraint = new Constraints\Callback([
             'callback' => function ($value, ExecutionContextInterface $context) {
                 if (empty($value)) {
@@ -137,6 +135,8 @@ class TemplateForm extends Form
                 }
             },
         ]);
+
+        $editorOptions = $this->getEditorOptions();
 
         return [
             'name' => F::text('Template name')
