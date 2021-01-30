@@ -28,4 +28,17 @@ return [
             '@vendor/maileryio/mailery-template-email/src/Entity',
         ],
     ],
+
+    'maileryio/mailery-menu-sidebar' => [
+        'items' => [
+            'templates' => [
+                'activeRouteNames' => [
+                    '/template/email/view',
+                    '/template/email/create',
+                    '/template/email/edit',
+                    '/template/email/delete',
+                ],
+            ],
+        ],
+    ],
 ];
