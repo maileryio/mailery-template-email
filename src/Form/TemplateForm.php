@@ -5,7 +5,7 @@ namespace Mailery\Template\Email\Form;
 use FormManager\Factory as F;
 use FormManager\Form;
 use Mailery\Brand\Entity\Brand;
-use Mailery\Brand\Service\BrandLocatorInterface as BrandLocator;
+use Mailery\Brand\BrandLocatorInterface as BrandLocator;
 use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Repository\TemplateRepository;
 use Mailery\Template\Email\Service\TemplateCrudService;
