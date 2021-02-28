@@ -20,14 +20,14 @@ $this->setTitle($template->getName());
             <h1 class="h3">Template #<?= $template->getId(); ?></h1>
             <div class="btn-toolbar float-right">
                 <?= Link::widget()
-                    ->label((string) Icon::widget()->name('delete')->options(['class' => 'mr-1']) . ' Delete')
+                    ->label(Icon::widget()->name('delete')->options(['class' => 'mr-1'])->render() . ' Delete')
                     ->method('delete')
                     ->href($urlGenerator->generate('/template/default/delete', ['id' => $template->getId()]))
                     ->confirm('Are you sure?')
                     ->options([
                         'class' => 'btn btn-sm btn-danger mx-sm-1 mb-2',
-                        'encode' => false,
-                    ]);
+                    ])
+                    ->encode(false);
                 ?>
                 <a class="btn btn-sm btn-secondary mx-sm-1 mb-2" href="<?= $urlGenerator->generate($template->getEditRouteName(), $template->getEditRouteParams()); ?>">
                     <?= Icon::widget()->name('pencil')->options(['class' => 'mr-1']); ?>
