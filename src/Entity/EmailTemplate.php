@@ -2,7 +2,6 @@
 
 namespace Mailery\Template\Email\Entity;
 
-use Mailery\Template\Entity\Template as BaseTemplate;
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityTrait;
 use Mailery\Common\Entity\RoutableEntityInterface;
@@ -10,7 +9,7 @@ use Mailery\Common\Entity\RoutableEntityInterface;
 /**
  * @Cycle\Annotated\Annotation\Entity
  */
-class EmailTemplate extends BaseTemplate implements RoutableEntityInterface, LoggableEntityInterface
+class EmailTemplate extends Template implements RoutableEntityInterface, LoggableEntityInterface
 {
     use LoggableEntityTrait;
 
