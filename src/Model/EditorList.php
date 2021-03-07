@@ -4,26 +4,22 @@ namespace Mailery\Template\Email\Model;
 
 use RuntimeException;
 use Mailery\Template\Email\Model\EditorInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
-class EditorList
+class EditorList extends ArrayCollection
 {
     /**
-     * @var EditorInterface[]
+     * @param EditorInterface[] $elements
      */
-    private array $items = [];
-
-    /**
-     * @param EditorInterface[] $items
-     */
-    public function __construct(array $items = [])
+    public function __construct(array $elements = [])
     {
-        foreach ($items as $item) {
-            if (!$item instanceof EditorInterface) {
+        foreach ($elements as $element) {
+            if (!$element instanceof EditorInterface) {
                 throw new RuntimeException('Editor must be implement EditorInterface');
             }
         }
 
-        $this->items = $items;
+        parent::__construct($elements);
     }
 
     /**
@@ -32,7 +28,7 @@ class EditorList
     public function getValueOptions(): array
     {
         $options = [];
-        foreach ($this->items as $item) {
+        foreach ($this->toArray() as $item) {
             $options[$item->getName()] = $item->getLabel();
         }
 
@@ -45,7 +41,7 @@ class EditorList
      */
     public function findByName(?string $name): ?EditorInterface
     {
-        foreach ($this->items as $item) {
+        foreach ($this->toArray() as $item) {
             if ($item->getName() === $name) {
                 return $item;
             }

@@ -2,6 +2,7 @@
 
 namespace Mailery\Template\Email\Entity;
 
+use Mailery\Template\Entity\Template;
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityTrait;
 use Mailery\Common\Entity\RoutableEntityInterface;

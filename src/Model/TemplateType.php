@@ -17,7 +17,7 @@ class TemplateType implements TemplateTypeInterface
     /**
      * @inheritdoc
      */
-    public function getShortLabel(): string
+    public function getCreateLabel(): string
     {
         return 'Email template';
     }

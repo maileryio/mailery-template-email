@@ -11,11 +11,12 @@ declare(strict_types=1);
  */
 
 use Mailery\Template\Email\Model\TemplateType;
+use Yiisoft\Factory\Definitions\Reference;
 
 return [
     'maileryio/mailery-template' => [
         'types' => [
-            TemplateType::class => TemplateType::class,
+            Reference::to(TemplateType::class),
         ],
     ],
 
@@ -36,7 +37,6 @@ return [
                     '/template/email/view',
                     '/template/email/create',
                     '/template/email/edit',
-                    '/template/email/delete',
                 ],
             ],
         ],

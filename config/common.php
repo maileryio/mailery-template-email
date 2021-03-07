@@ -1,10 +1,11 @@
 <?php
 
-use Mailery\Template\Email\Provider\EditorConfigs;
+use Mailery\Template\Email\Model\EditorList;
 
 return [
-    EditorConfigs::class => static function () use ($params) {
-        $configs = $params['maileryio/mailery-template-email']['editors'] ?? [];
-        return new EditorConfigs($configs);
-    },
+    EditorList::class => [
+        '__construct()' => [
+            'elements' => $params['maileryio/mailery-template-email']['editors'],
+        ],
+    ],
 ];
