@@ -19,7 +19,7 @@ class TemplateType implements TemplateTypeInterface
      */
     public function getShortLabel(): string
     {
-        return 'Email';
+        return 'Email template';
     }
 
     /**
