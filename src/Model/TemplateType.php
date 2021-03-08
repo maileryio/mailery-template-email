@@ -3,6 +3,7 @@
 namespace Mailery\Template\Email\Model;
 
 use Mailery\Template\Model\TemplateTypeInterface;
+use Mailery\Template\Email\Entity\EmailTemplate;
 
 class TemplateType implements TemplateTypeInterface
 {
@@ -11,7 +12,7 @@ class TemplateType implements TemplateTypeInterface
      */
     public function getLabel(): string
     {
-        return 'Email messaging';
+        return 'Email template';
     }
 
     /**
@@ -36,5 +37,14 @@ class TemplateType implements TemplateTypeInterface
     public function getCreateRouteParams(): array
     {
         return [];
+    }
+
+    /**
+     * @param object $entity
+     * @return bool
+     */
+    public function isEntitySameType(object $entity): bool
+    {
+        return $entity instanceof EmailTemplate;
     }
 }
