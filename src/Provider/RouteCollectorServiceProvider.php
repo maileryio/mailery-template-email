@@ -17,16 +17,17 @@ final class RouteCollectorServiceProvider extends ServiceProvider
         $collector = $container->get(RouteCollectorInterface::class);
 
         $collector->addGroup(
-            Group::create(
-                '/brand/{brandId:\d+}',
-                [
-                    Route::methods(['GET', 'POST'], '/template/email/view/{id:\d+}', [DefaultController::class, 'view'])
-                        ->name('/template/email/view'),
-                    Route::methods(['GET', 'POST'], '/template/email/create', [DefaultController::class, 'create'])
-                        ->name('/template/email/create'),
-                    Route::methods(['GET', 'POST'], '/template/email/edit/{id:\d+}', [DefaultController::class, 'edit'])
-                        ->name('/template/email/edit'),
-                ]
+            Group::create('/brand/{brandId:\d+}')
+                ->routes(
+                    Route::methods(['GET', 'POST'], '/template/email/view/{id:\d+}')
+                        ->name('/template/email/view')
+                        ->action([DefaultController::class, 'view']),
+                    Route::methods(['GET', 'POST'], '/template/email/create')
+                        ->name('/template/email/create')
+                        ->action([DefaultController::class, 'create']),
+                    Route::methods(['GET', 'POST'], '/template/email/edit/{id:\d+}')
+                        ->name('/template/email/edit')
+                        ->action([DefaultController::class, 'edit'])
             )
         );
     }
