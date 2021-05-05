@@ -65,23 +65,23 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function getEditRouteName(): ?string
+    public function getIndexRouteName(): ?string
     {
-        return '/template/email/edit';
+        return '/template/default/index';
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function getEditRouteParams(): array
+    public function getIndexRouteParams(): array
     {
-        return ['id' => $this->getId()];
+        return [];
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getViewRouteName(): ?string
     {
@@ -89,7 +89,7 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getViewRouteParams(): array
     {
@@ -97,7 +97,7 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getPreviewRouteName(): ?string
     {
@@ -105,9 +105,41 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getPreviewRouteParams(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getEditRouteName(): ?string
+    {
+        return '/template/email/edit';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getEditRouteParams(): array
+    {
+        return ['id' => $this->getId()];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDeleteRouteName(): ?string
+    {
+        return '/subscriber/group/delete';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDeleteRouteParams(): array
     {
         return ['id' => $this->getId()];
     }
