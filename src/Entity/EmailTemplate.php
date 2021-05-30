@@ -18,29 +18,41 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
      * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
      * @var string
      */
-    private $content;
+    private $htmlContent;
+
+    /**
+     * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
+     * @var string
+     */
+    private $textContent;
 
     /**
      * @Cycle\Annotated\Annotation\Column(type = "string")
      * @var string
      */
-    private $editor;
+    private $htmlEditor;
+
+    /**
+     * @Cycle\Annotated\Annotation\Column(type = "string")
+     * @var string
+     */
+    private $textEditor;
 
     /**
      * @return string
      */
-    public function getContent(): string
+    public function getHtmlContent(): string
     {
-        return $this->content ?? '';
+        return $this->htmlContent ?? '';
     }
 
     /**
-     * @param string $content
+     * @param string $htmlContent
      * @return self
      */
-    public function setContent(string $content): self
+    public function setHtmlContent(string $htmlContent): self
     {
-        $this->content = $content;
+        $this->htmlContent = $htmlContent;
 
         return $this;
     }
@@ -48,18 +60,56 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
     /**
      * @return string
      */
-    public function getEditor(): string
+    public function getTextContent(): string
     {
-        return $this->editor;
+        return $this->textContent ?? '';
     }
 
     /**
-     * @param string $editor
+     * @param string $textContent
      * @return self
      */
-    public function setEditor(string $editor): self
+    public function setTextContent(string $textContent): self
     {
-        $this->editor = $editor;
+        $this->textContent = $textContent;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHtmlEditor(): string
+    {
+        return $this->htmlEditor;
+    }
+
+    /**
+     * @param string $htmlEditor
+     * @return self
+     */
+    public function setHtmlEditor(string $htmlEditor): self
+    {
+        $this->htmlEditor = $htmlEditor;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextEditor(): string
+    {
+        return $this->textEditor;
+    }
+
+    /**
+     * @param string $textEditor
+     * @return self
+     */
+    public function setTextEditor(string $textEditor): self
+    {
+        $this->textEditor = $textEditor;
 
         return $this;
     }

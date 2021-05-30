@@ -12,7 +12,7 @@ class ContentInput extends Textarea
     /**
      * @var EditorInterface|null
      */
-    private ?EditorInterface $editor;
+    private ?EditorInterface $editor = null;
 
     /**
      * @inheritdoc

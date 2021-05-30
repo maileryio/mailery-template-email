@@ -16,12 +16,22 @@ class TemplateValueObject
     /**
      * @var string
      */
-    private string $editor;
+    private string $htmlEditor;
 
     /**
      * @var string
      */
-    private string $content;
+    private string $textEditor;
+
+    /**
+     * @var string
+     */
+    private string $htmlContent;
+
+    /**
+     * @var string
+     */
+    private string $textContent;
 
     /**
      * @var Brand
@@ -37,7 +47,8 @@ class TemplateValueObject
         $new = new self();
 
         $new->name = $form['name']->getValue();
-        $new->editor = $form['editor']->getValue();
+        $new->htmlEditor = $form['htmlEditor']->getValue();
+        $new->textEditor = $form['textEditor']->getValue();
 
         return $new;
     }
@@ -50,7 +61,8 @@ class TemplateValueObject
     {
         $new = new self();
 
-        $new->content = $form['content']->getValue();
+        $new->htmlContent = $form['htmlContent']->getValue();
+        $new->textContent = $form['textContent']->getValue();
 
         return $new;
     }
@@ -66,17 +78,33 @@ class TemplateValueObject
     /**
      * @return string
      */
-    public function getEditor(): string
+    public function getHtmlEditor(): string
     {
-        return $this->editor;
+        return $this->htmlEditor;
     }
 
     /**
      * @return string
      */
-    public function getContent(): string
+    public function getTextEditor(): string
     {
-        return $this->content;
+        return $this->textEditor;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHtmlContent(): string
+    {
+        return $this->htmlContent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextContent(): string
+    {
+        return $this->textContent;
     }
 
     /**

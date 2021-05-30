@@ -90,7 +90,8 @@ class TemplateForm extends Form
         $this->offsetSet('', F::submit('Update'));
 
         $this['name']->setValue($template->getName());
-        $this['editor']->setValue($template->getName())->setAttribute('readonly', true);
+        $this['htmlEditor']->setValue($template->getHtmlEditor())->setAttribute('readonly', true);
+        $this['textEditor']->setValue($template->getTextEditor());
 
         return $this;
     }
@@ -103,6 +104,8 @@ class TemplateForm extends Form
         if (!$this->isValid()) {
             return null;
         }
+
+        $this['textEditor']->setValue($this->editorFactory->getTextAreaEditor()->getName());
 
         $valueObject = TemplateValueObject::fromForm($this)
             ->withBrand($this->brand);
@@ -136,7 +139,7 @@ class TemplateForm extends Form
             },
         ]);
 
-        $editorOptions = $this->getEditorOptions();
+        $htmlEditorOptions = $this->getHtmlEditorOptions();
 
         return [
             'name' => F::text('Template name')
@@ -145,11 +148,13 @@ class TemplateForm extends Form
                     'min' => 4,
                 ]))
                 ->addConstraint($nameConstraint),
-            'editor' => F::select('Editor', $editorOptions)
+            'htmlEditor' => F::select('HTML editor', $htmlEditorOptions)
                 ->addConstraint(new Constraints\NotBlank())
                 ->addConstraint(new Constraints\Choice([
-                    'choices' => array_keys($editorOptions)
+                    'choices' => array_keys($htmlEditorOptions)
                 ])),
+            'textEditor' => F::hidden($this->editorFactory->getTextAreaEditor()->getName()),
+
             '' => F::submit($this->template === null ? 'Create' : 'Update'),
         ];
     }
@@ -157,7 +162,7 @@ class TemplateForm extends Form
     /**
      * @return array
      */
-    private function getEditorOptions(): array
+    private function getHtmlEditorOptions(): array
     {
         return $this->editorList->getValueOptions();
     }

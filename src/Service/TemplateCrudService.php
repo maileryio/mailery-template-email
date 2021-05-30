@@ -30,7 +30,8 @@ class TemplateCrudService
     {
         $template = (new EmailTemplate())
             ->setName($valueObject->getName())
-            ->setEditor($valueObject->getEditor())
+            ->setHtmlEditor($valueObject->getHtmlEditor())
+            ->setTextEditor($valueObject->getTextEditor())
             ->setBrand($valueObject->getBrand())
         ;
 
@@ -50,7 +51,8 @@ class TemplateCrudService
     {
         $template = $template
             ->setName($valueObject->getName())
-            ->setEditor($valueObject->getEditor())
+            ->setHtmlEditor($valueObject->getHtmlEditor())
+            ->setTextEditor($valueObject->getTextEditor())
             ->setBrand($valueObject->getBrand())
         ;
 
@@ -69,7 +71,8 @@ class TemplateCrudService
     public function updateContent(EmailTemplate $template, TemplateValueObject $valueObject): EmailTemplate
     {
         $template = $template
-            ->setContent($valueObject->getContent())
+            ->setHtmlContent($valueObject->getHtmlContent())
+            ->setTextContent($valueObject->getTextContent())
         ;
 
         $tr = new Transaction($this->orm);

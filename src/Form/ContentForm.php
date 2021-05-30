@@ -68,10 +68,16 @@ class ContentForm extends Form
     {
         $this->template = $template;
         $this->offsetSet(
-            'content',
-            $this['content']
-                ->withEditor($this->editorFactory->getEditor($template))
-                ->setValue($template->getContent())
+            'htmlContent',
+            $this['htmlContent']
+                ->withEditor($this->editorFactory->getHtmlEditor($template))
+                ->setValue($template->getHtmlContent())
+        );
+        $this->offsetSet(
+            'textContent',
+            $this['textContent']
+                ->withEditor($this->editorFactory->getTextEditor($template))
+                ->setValue($template->getTextContent())
         );
 
         return $this;
@@ -99,7 +105,9 @@ class ContentForm extends Form
     private function inputs(): array
     {
         return [
-            'content' => (new ContentInput('Template content'))
+            'htmlContent' => (new ContentInput('HTML content'))
+                ->addConstraint(new Constraints\NotBlank()),
+            'textContent' => (new ContentInput('Plain text content'))
                 ->addConstraint(new Constraints\NotBlank()),
             '' => F::submit('Save'),
         ];

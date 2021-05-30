@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 
 use Mailery\Template\Email\Model\TemplateType;
+use Mailery\Template\Email\Model\TextAreaEditor;
 use Yiisoft\Factory\Definitions\Reference;
 
 return [
@@ -21,7 +22,9 @@ return [
     ],
 
     'maileryio/mailery-template-email' => [
-        'editors' => [],
+        'editors' => [
+            Reference::to(TextAreaEditor::class),
+        ],
     ],
 
     'yiisoft/yii-cycle' => [
