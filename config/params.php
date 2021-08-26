@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 use Mailery\Template\Email\Model\TemplateType;
 use Mailery\Template\Email\Model\TextAreaEditor;
-use Yiisoft\Factory\Definitions\Reference;
+use Yiisoft\Factory\Definition\Reference;
 
 return [
     'maileryio/mailery-template' => [
