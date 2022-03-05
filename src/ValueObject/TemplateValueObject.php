@@ -2,12 +2,12 @@
 
 namespace Mailery\Template\Email\ValueObject;
 
-use Mailery\Brand\Entity\Brand;
 use Mailery\Template\Email\Form\TemplateForm;
 use Mailery\Template\Email\Form\ContentForm;
 
 class TemplateValueObject
 {
+
     /**
      * @var string
      */
@@ -34,11 +34,6 @@ class TemplateValueObject
     private string $textContent;
 
     /**
-     * @var Brand
-     */
-    private Brand $brand;
-
-    /**
      * @param TemplateForm $form
      * @return self
      */
@@ -46,9 +41,9 @@ class TemplateValueObject
     {
         $new = new self();
 
-        $new->name = $form['name']->getValue();
-        $new->htmlEditor = $form['htmlEditor']->getValue();
-        $new->textEditor = $form['textEditor']->getValue();
+        $new->name = $form->getAttributeValue('name');
+        $new->htmlEditor = $form->getAttributeValue('htmlEditor');
+        $new->textEditor = $form->getAttributeValue('textEditor');
 
         return $new;
     }
@@ -107,23 +102,4 @@ class TemplateValueObject
         return $this->textContent;
     }
 
-    /**
-     * @return Brand
-     */
-    public function getBrand(): Brand
-    {
-        return $this->brand;
-    }
-
-    /**
-     * @param Brand $brand
-     * @return self
-     */
-    public function withBrand(Brand $brand): self
-    {
-        $new = clone $this;
-        $new->brand = $brand;
-
-        return $new;
-    }
 }

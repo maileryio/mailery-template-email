@@ -2,25 +2,37 @@
 
 namespace Mailery\Template\Email\Form;
 
-use FormManager\Factory as F;
-use FormManager\Form;
-use Mailery\Brand\Entity\Brand;
 use Mailery\Brand\BrandLocatorInterface as BrandLocator;
 use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Repository\TemplateRepository;
-use Mailery\Template\Email\Service\TemplateCrudService;
-use Mailery\Template\Email\ValueObject\TemplateValueObject;
-use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Mailery\Template\Email\Model\EditorList;
 use Mailery\Template\Email\Factory\EditorFactory;
+use Yiisoft\Form\FormModel;
+use Yiisoft\Form\HtmlOptions\RequiredHtmlOptions;
+use Yiisoft\Validator\Rule\Required;
+use Yiisoft\Form\HtmlOptions\HasLengthHtmlOptions;
+use Yiisoft\Validator\Rule\HasLength;
+use Yiisoft\Validator\Rule\InRange;
+use Yiisoft\Validator\Rule\Callback;
+use Yiisoft\Validator\Result;
 
-class TemplateForm extends Form
+class TemplateForm extends FormModel
 {
+
     /**
-     * @var Brand
+     * @var string|null
      */
-    private Brand $brand;
+    private ?string $name = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $htmlEditor = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $textEditor = null;
 
     /**
      * @var EmailTemplate|null
@@ -33,137 +45,92 @@ class TemplateForm extends Form
     private TemplateRepository $templateRepo;
 
     /**
-     * @var TemplateCrudService
-     */
-    private TemplateCrudService $templateCrudService;
-
-    /**
      * @var EditorList
      */
     private EditorList $editorList;
 
     /**
-     * @var EditorFactory
-     */
-    private EditorFactory $editorFactory;
-
-    /**
      * @param BrandLocator $brandLocator
      * @param TemplateRepository $templateRepo
-     * @param TemplateCrudService $templateCrudService
      * @param EditorList $editorList
      * @param EditorFactory $editorFactory
      */
     public function __construct(
         BrandLocator $brandLocator,
         TemplateRepository $templateRepo,
-        TemplateCrudService $templateCrudService,
         EditorList $editorList,
         EditorFactory $editorFactory
     ) {
-        $this->brand = $brandLocator->getBrand();
-        $this->templateRepo = $templateRepo->withBrand($this->brand);
-        $this->templateCrudService = $templateCrudService;
+        $this->templateRepo = $templateRepo->withBrand($brandLocator->getBrand());
         $this->editorList = $editorList;
-        $this->editorFactory = $editorFactory;
-        parent::__construct($this->inputs());
-    }
+        $this->textEditor = $editorFactory->getTextAreaEditor()->getName();
 
-    /**
-     * @param string $csrf
-     * @return \self
-     */
-    public function withCsrf(string $value, string $name = '_csrf'): self
-    {
-        $this->offsetSet($name, F::hidden($value));
-
-        return $this;
+        parent::__construct();
     }
 
     /**
      * @param EmailTemplate $template
      * @return self
      */
-    public function withTemplate(EmailTemplate $template): self
+    public function withEntity(EmailTemplate $template): self
     {
-        $this->template = $template;
-        $this->offsetSet('', F::submit('Update'));
+        $new = clone $this;
+        $new->template = $template;
+        $new->name = $template->getName();
+        $new->htmlEditor = $template->getHtmlEditor();
+        $new->textEditor = $template->getTextEditor();
 
-        $this['name']->setValue($template->getName());
-        $this['htmlEditor']->setValue($template->getHtmlEditor())->setAttribute('readonly', true);
-        $this['textEditor']->setValue($template->getTextEditor());
-
-        return $this;
-    }
-
-    /**
-     * @return EmailTemplate|null
-     */
-    public function save(): ?EmailTemplate
-    {
-        if (!$this->isValid()) {
-            return null;
-        }
-
-        $this['textEditor']->setValue($this->editorFactory->getTextAreaEditor()->getName());
-
-        $valueObject = TemplateValueObject::fromForm($this)
-            ->withBrand($this->brand);
-
-        if (($template = $this->template) === null) {
-            $template = $this->templateCrudService->create($valueObject);
-        } else {
-            $this->templateCrudService->update($template, $valueObject);
-        }
-
-        return $template;
+        return $new;
     }
 
     /**
      * @return array
      */
-    private function inputs(): array
+    public function getAttributeLabels(): array
     {
-        $nameConstraint = new Constraints\Callback([
-            'callback' => function ($value, ExecutionContextInterface $context) {
-                if (empty($value)) {
-                    return;
-                }
-
-                $template = $this->templateRepo->findByName($value, $this->template);
-                if ($template !== null) {
-                    $context->buildViolation('Template with this name already exists.')
-                        ->atPath('name')
-                        ->addViolation();
-                }
-            },
-        ]);
-
-        $htmlEditorOptions = $this->getHtmlEditorOptions();
-
         return [
-            'name' => F::text('Template name')
-                ->addConstraint(new Constraints\NotBlank())
-                ->addConstraint(new Constraints\Length([
-                    'min' => 4,
-                ]))
-                ->addConstraint($nameConstraint),
-            'htmlEditor' => F::select('HTML editor', $htmlEditorOptions)
-                ->addConstraint(new Constraints\NotBlank())
-                ->addConstraint(new Constraints\Choice([
-                    'choices' => array_keys($htmlEditorOptions)
-                ])),
-            'textEditor' => F::hidden($this->editorFactory->getTextAreaEditor()->getName()),
-
-            '' => F::submit($this->template === null ? 'Create' : 'Update'),
+            'name' => 'Template name',
+            'htmlEditor' => 'HTML editor',
+            'textEditor' => 'Text editor',
         ];
     }
 
     /**
      * @return array
      */
-    private function getHtmlEditorOptions(): array
+    public function getRules(): array
+    {
+        return [
+            'name' => [
+                new RequiredHtmlOptions(Required::rule()),
+                new HasLengthHtmlOptions(HasLength::rule()->max(255)),
+                Callback::rule(function ($value) {
+                    $result = new Result();
+                    $record = $this->templateRepo->findByName($value, $this->template);
+
+                    if ($record !== null) {
+                        $result->addError('Template with this name already exists.');
+                    }
+
+                    return $result;
+                })
+            ],
+            'htmlEditor' => [
+                new RequiredHtmlOptions(Required::rule()),
+                InRange::rule(array_keys($this->getHtmlEditorOptions())),
+            ],
+            'textEditor' => [
+                new RequiredHtmlOptions(Required::rule()),
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getHtmlEditorOptions(): array
     {
         return $this->editorList->getValueOptions();
     }
+
 }

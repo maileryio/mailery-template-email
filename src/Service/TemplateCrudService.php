@@ -3,9 +3,10 @@
 namespace Mailery\Template\Email\Service;
 
 use Cycle\ORM\ORMInterface;
-use Cycle\ORM\Transaction;
 use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Email\ValueObject\TemplateValueObject;
+use Mailery\Brand\Entity\Brand;
+use Yiisoft\Yii\Cycle\Data\Writer\EntityWriter;
 
 class TemplateCrudService
 {
@@ -13,6 +14,11 @@ class TemplateCrudService
      * @var ORMInterface
      */
     private ORMInterface $orm;
+
+    /**
+     * @var Brand
+     */
+    private Brand $brand;
 
     /**
      * @param ORMInterface $orm
@@ -23,21 +29,31 @@ class TemplateCrudService
     }
 
     /**
+     * @param Brand $brand
+     * @return self
+     */
+    public function withBrand(Brand $brand): self
+    {
+        $new = clone $this;
+        $new->brand = $brand;
+
+        return $new;
+    }
+
+    /**
      * @param TemplateValueObject $valueObject
      * @return EmailTemplate
      */
     public function create(TemplateValueObject $valueObject): EmailTemplate
     {
         $template = (new EmailTemplate())
+            ->setBrand($this->brand)
             ->setName($valueObject->getName())
             ->setHtmlEditor($valueObject->getHtmlEditor())
             ->setTextEditor($valueObject->getTextEditor())
-            ->setBrand($valueObject->getBrand())
         ;
 
-        $tr = new Transaction($this->orm);
-        $tr->persist($template);
-        $tr->run();
+        (new EntityWriter($this->orm))->write([$template]);
 
         return $template;
     }
@@ -53,12 +69,9 @@ class TemplateCrudService
             ->setName($valueObject->getName())
             ->setHtmlEditor($valueObject->getHtmlEditor())
             ->setTextEditor($valueObject->getTextEditor())
-            ->setBrand($valueObject->getBrand())
         ;
 
-        $tr = new Transaction($this->orm);
-        $tr->persist($template);
-        $tr->run();
+        (new EntityWriter($this->orm))->write([$template]);
 
         return $template;
     }
@@ -75,9 +88,7 @@ class TemplateCrudService
             ->setTextContent($valueObject->getTextContent())
         ;
 
-        $tr = new Transaction($this->orm);
-        $tr->persist($template);
-        $tr->run();
+        (new EntityWriter($this->orm))->write([$template]);
 
         return $template;
     }
@@ -88,9 +99,7 @@ class TemplateCrudService
      */
     public function delete(EmailTemplate $template): bool
     {
-        $tr = new Transaction($this->orm);
-        $tr->delete($template);
-        $tr->run();
+        (new EntityWriter($this->orm))->delete([$template]);
 
         return true;
     }

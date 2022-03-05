@@ -183,7 +183,7 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
      */
     public function getDeleteRouteName(): ?string
     {
-        return '/subscriber/group/delete';
+        return '/template/default/delete';
     }
 
     /**
