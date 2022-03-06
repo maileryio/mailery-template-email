@@ -3,54 +3,57 @@
 namespace Mailery\Template\Email\Widget;
 
 use Mailery\Template\Email\Model\EditorWidgetInterface;
-use Yiisoft\Html\Html;
 use Yiisoft\Widget\Widget as BaseWidget;
+use Yiisoft\Form\Widget\Field;
+use Yiisoft\Form\FormModelInterface;
 
 class TextAreaEditorWidget extends BaseWidget implements EditorWidgetInterface
 {
 
     /**
-     * @var string
+     * @var FormModelInterface
      */
-    private string $name;
+    private FormModelInterface $data;
 
     /**
      * @var string
      */
-    private string $value;
+    private string $attribute;
 
     /**
-     * @param string $name
-     * @return self
+     * @var array
      */
-    public function withName(string $name): self
+    private array $options = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function config(FormModelInterface $data, string $attribute): self
     {
         $new = clone $this;
-        $new->name = $name;
-
+        $new->data = $data;
+        $new->attribute = $attribute;
         return $new;
     }
 
     /**
-     * @param string $value
-     * @return self
+     * @inheritdoc
      */
-    public function withValue(string $value): self
+    public function options(array $options = []): self
     {
         $new = clone $this;
-        $new->value = $value;
-
+        $new->options = $options;
         return $new;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function run(): string
     {
-        return Html::textarea($this->name, $this->value)
-            ->class('form-control')
-            ->rows(5);
+        return Field::widget()
+            ->config($this->data, $this->attribute)
+            ->textArea($this->options);
     }
 
 }

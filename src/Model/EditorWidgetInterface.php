@@ -2,17 +2,22 @@
 
 namespace Mailery\Template\Email\Model;
 
+use Yiisoft\Form\FormModelInterface;
+
 interface EditorWidgetInterface
 {
-    /**
-     * @param string $name
-     * @return self
-     */
-    public function withName(string $name): self;
 
     /**
-     * @param string $value
+     * @param FormModelInterface $data
+     * @param string $attribute
      * @return self
      */
-    public function withValue(string $value): self;
+    public function config(FormModelInterface $data, string $attribute): self;
+
+    /**
+     * @param array $options
+     * @return self
+     */
+    public function options(array $options = []): self;
+
 }

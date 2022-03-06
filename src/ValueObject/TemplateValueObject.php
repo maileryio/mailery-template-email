@@ -55,9 +55,8 @@ class TemplateValueObject
     public static function fromContentForm(ContentForm $form): self
     {
         $new = new self();
-
-        $new->htmlContent = $form['htmlContent']->getValue();
-        $new->textContent = $form['textContent']->getValue();
+        $new->htmlContent = $form->getAttributeValue('htmlContent');
+        $new->textContent = $form->getAttributeValue('textContent');
 
         return $new;
     }

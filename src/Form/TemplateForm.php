@@ -6,7 +6,7 @@ use Mailery\Brand\BrandLocatorInterface as BrandLocator;
 use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Repository\TemplateRepository;
 use Mailery\Template\Email\Model\EditorList;
-use Mailery\Template\Email\Factory\EditorFactory;
+use Mailery\Template\Email\Model\TextAreaEditor;
 use Yiisoft\Form\FormModel;
 use Yiisoft\Form\HtmlOptions\RequiredHtmlOptions;
 use Yiisoft\Validator\Rule\Required;
@@ -53,17 +53,17 @@ class TemplateForm extends FormModel
      * @param BrandLocator $brandLocator
      * @param TemplateRepository $templateRepo
      * @param EditorList $editorList
-     * @param EditorFactory $editorFactory
+     * @param TextAreaEditor $textAreaEditor
      */
     public function __construct(
         BrandLocator $brandLocator,
         TemplateRepository $templateRepo,
         EditorList $editorList,
-        EditorFactory $editorFactory
+        TextAreaEditor $textAreaEditor
     ) {
         $this->templateRepo = $templateRepo->withBrand($brandLocator->getBrand());
         $this->editorList = $editorList;
-        $this->textEditor = $editorFactory->getTextAreaEditor()->getName();
+        $this->textEditor = $textAreaEditor->getName();
 
         parent::__construct();
     }

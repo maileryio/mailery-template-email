@@ -2,21 +2,23 @@
 
 namespace Mailery\Template\Email\Form;
 
-use Cycle\ORM\ORMInterface;
-use FormManager\Factory as F;
-use FormManager\Form;
 use Mailery\Template\Email\Entity\EmailTemplate;
-use Mailery\Template\Email\Service\TemplateCrudService;
-use Mailery\Template\Email\ValueObject\TemplateValueObject;
-use Symfony\Component\Validator\Constraints;
-use Mailery\Template\Email\Factory\EditorFactory;
+use Mailery\Template\Email\Model\EditorList;
+use Mailery\Template\Email\Model\Field;
+use Yiisoft\Form\FormModel;
+use Yiisoft\Widget\Widget;
 
-class ContentForm extends Form
+class ContentForm extends FormModel
 {
     /**
-     * @var ORMInterface
+     * @var string|null
      */
-    private ORMInterface $orm;
+    private ?string $htmlContent = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $textContent = null;
 
     /**
      * @var EmailTemplate|null
@@ -24,92 +26,53 @@ class ContentForm extends Form
     private ?EmailTemplate $template;
 
     /**
-     * @var TemplateCrudService
+     * @var EditorList
      */
-    private TemplateCrudService $templateCrudService;
+    private EditorList $editorList;
 
     /**
-     * @var EditorFactory
+     * @param EditorList $editorList
      */
-    private EditorFactory $editorFactory;
-
-    /**
-     * @param TemplateCrudService $templateCrudService
-     * @param EditorFactory $editorFactory
-     * @param ORMInterface $orm
-     */
-    public function __construct(
-        TemplateCrudService $templateCrudService,
-        EditorFactory $editorFactory,
-        ORMInterface $orm
-    ) {
-        $this->orm = $orm;
-        $this->templateCrudService = $templateCrudService;
-        $this->editorFactory = $editorFactory;
-        parent::__construct($this->inputs());
-    }
-
-    /**
-     * @param string $csrf
-     * @return \self
-     */
-    public function withCsrf(string $value, string $name = '_csrf'): self
+    public function __construct(EditorList $editorList)
     {
-        $this->offsetSet($name, F::hidden($value));
+        $this->editorList = $editorList;
 
-        return $this;
+        parent::__construct();
     }
 
     /**
      * @param EmailTemplate $template
      * @return self
      */
-    public function withTemplate(EmailTemplate $template): self
+    public function withEntity(EmailTemplate $template): self
     {
-        $this->template = $template;
-        $this->offsetSet(
-            'htmlContent',
-            $this['htmlContent']
-                ->withEditor($this->editorFactory->getHtmlEditor($template))
-                ->setValue($template->getHtmlContent())
-        );
-        $this->offsetSet(
-            'textContent',
-            $this['textContent']
-                ->withEditor($this->editorFactory->getTextEditor($template))
-                ->setValue($template->getTextContent())
-        );
+        $new = clone $this;
+        $new->template = $template;
+        $new->htmlContent = $template->getHtmlContent();
+        $new->textContent = $template->getTextContent();
 
-        return $this;
-    }
-
-    /**
-     * @return EmailTemplate|null
-     */
-    public function save(): ?EmailTemplate
-    {
-        if (!$this->isValid()) {
-            return null;
-        }
-
-        $valueObject = TemplateValueObject::fromContentForm($this);
-
-        $this->templateCrudService->updateContent($this->template, $valueObject);
-
-        return $this->template;
+        return $new;
     }
 
     /**
      * @return array
      */
-    private function inputs(): array
+    public function getAttributeLabels(): array
     {
         return [
-            'htmlContent' => (new ContentInput('HTML content'))
-                ->addConstraint(new Constraints\NotBlank()),
-            'textContent' => (new ContentInput('Plain text content'))
-                ->addConstraint(new Constraints\NotBlank()),
-            '' => F::submit('Save'),
+            'htmlContent' => 'HTML content',
+            'textContent' => 'Plain text content',
         ];
     }
+
+    /**
+     * @return Widget
+     */
+    public function getField(): Widget
+    {
+        return (new Field())
+            ->withEditorList($this->editorList)
+            ->withEntity($this->template);
+    }
+
 }

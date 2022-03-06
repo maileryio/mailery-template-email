@@ -76,38 +76,30 @@ class DefaultController
 
     /**
      * @param Request $request
-     * @param ContentForm $contentForm
+     * @param ValidatorInterface $validator
+     * @param ContentForm $form
      * @return Response
      */
-    public function view(Request $request, ContentForm $contentForm): Response
+    public function view(Request $request, ValidatorInterface $validator, ContentForm $form): Response
     {
+        $body = $request->getParsedBody();
         $templateId = $request->getAttribute('id');
         if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
             return $this->responseFactory->createResponse(404);
         }
 
-        $contentForm
-            ->withTemplate($template)
-            ->setAttributes([
-                'action' => $request->getUri()->getPath(),
-                'method' => 'post',
-                'enctype' => 'multipart/form-data',
-            ])
-        ;
+        $form = $form->withEntity($template);
 
-        $submitted = $request->getMethod() === Method::POST;
+        if ($request->getMethod() === Method::POST && $form->load($body) && $validator->validate($form)->isValid()) {
+            $valueObject = TemplateValueObject::fromContentForm($form);
+            $this->templateCrudService->updateContent($template, $valueObject);
 
-        if ($submitted) {
-            $contentForm->loadFromServerRequest($request);
-
-            if ($contentForm->save() !== null) {
-                return $this->responseFactory
-                    ->createResponse(302)
-                    ->withHeader('Location', $this->urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
-            }
+            return $this->responseFactory
+                ->createResponse(302)
+                ->withHeader('Location', $this->urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
         }
 
-        return $this->viewRenderer->render('view', compact('template', 'contentForm', 'submitted'));
+        return $this->viewRenderer->render('view', compact('form', 'template'));
     }
 
     /**
