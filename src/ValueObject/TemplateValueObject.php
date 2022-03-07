@@ -41,9 +41,9 @@ class TemplateValueObject
     {
         $new = new self();
 
-        $new->name = $form->getAttributeValue('name');
-        $new->htmlEditor = $form->getAttributeValue('htmlEditor');
-        $new->textEditor = $form->getAttributeValue('textEditor');
+        $new->name = $form->getName;
+        $new->htmlEditor = $form->getHtmlEditor();
+        $new->textEditor = $form->getTextEditor();
 
         return $new;
     }
@@ -55,8 +55,8 @@ class TemplateValueObject
     public static function fromContentForm(ContentForm $form): self
     {
         $new = new self();
-        $new->htmlContent = $form->getAttributeValue('htmlContent');
-        $new->textContent = $form->getAttributeValue('textContent');
+        $new->htmlContent = $form->getHtmlContent();
+        $new->textContent = $form->getTextContent();
 
         return $new;
     }

@@ -55,6 +55,22 @@ class ContentForm extends FormModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getHtmlContent(): ?string
+    {
+        return $this->htmlContent;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTextContent(): ?string
+    {
+        return $this->textContent;
+    }
+
+    /**
      * @return array
      */
     public function getAttributeLabels(): array

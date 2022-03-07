@@ -84,6 +84,30 @@ class TemplateForm extends FormModel
     }
 
     /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHtmlEditor(): ?string
+    {
+        return $this->htmlEditor;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTextEditor(): ?string
+    {
+        return $this->textEditor;
+    }
+
+    /**
      * @return array
      */
     public function getAttributeLabels(): array
@@ -103,7 +127,7 @@ class TemplateForm extends FormModel
         return [
             'name' => [
                 new RequiredHtmlOptions(Required::rule()),
-                new HasLengthHtmlOptions(HasLength::rule()->max(255)),
+                new HasLengthHtmlOptions(HasLength::rule()->min(3)->max(255)),
                 Callback::rule(function ($value) {
                     $result = new Result();
                     $record = $this->templateRepo->findByName($value, $this->template);
