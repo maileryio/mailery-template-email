@@ -41,7 +41,7 @@ class TemplateValueObject
     {
         $new = new self();
 
-        $new->name = $form->getName;
+        $new->name = $form->getName();
         $new->htmlEditor = $form->getHtmlEditor();
         $new->textEditor = $form->getTextEditor();
 

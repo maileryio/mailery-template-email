@@ -11,7 +11,7 @@ use Yiisoft\Form\Widget\TextArea;
 /** @var Yiisoft\Yii\WebView $this */
 /** @var Psr\Http\Message\ServerRequestInterface $request */
 /** @var Mailery\Template\Email\Entity\EmailTemplate $template */
-/** @var \Mailery\Template\Email\Form\ContentForm $form */
+/** @var Mailery\Template\Email\Form\ContentForm $form */
 /** @var string $csrf */
 /** @var bool $submitted */
 

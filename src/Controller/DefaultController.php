@@ -85,7 +85,7 @@ class DefaultController
         $body = $request->getParsedBody();
         $templateId = $request->getAttribute('id');
         if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
-            return $this->responseFactory->createResponse(404);
+            return $this->responseFactory->createResponse(Status::NOT_FOUND);
         }
 
         $form = $form->withEntity($template);
@@ -95,8 +95,8 @@ class DefaultController
             $this->templateCrudService->updateContent($template, $valueObject);
 
             return $this->responseFactory
-                ->createResponse(302)
-                ->withHeader('Location', $this->urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
+                ->createResponse(Status::FOUND)
+                ->withHeader(Header::LOCATION, $this->urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
         }
 
         return $this->viewRenderer->render('view', compact('form', 'template'));
@@ -136,7 +136,7 @@ class DefaultController
         $body = $request->getParsedBody();
         $templateId = $request->getAttribute('id');
         if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
-            return $this->responseFactory->createResponse(404);
+            return $this->responseFactory->createResponse(Status::NOT_FOUND);
         }
 
         $form = $form->withEntity($template);
@@ -154,8 +154,8 @@ class DefaultController
             );
 
             return $this->responseFactory
-                ->createResponse(302)
-                ->withHeader('Location', $this->urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
+                ->createResponse(Status::FOUND)
+                ->withHeader(Header::LOCATION, $this->urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
         }
 
         return $this->viewRenderer->render('edit', compact('form', 'template'));

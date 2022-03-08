@@ -3,11 +3,11 @@
 namespace Mailery\Template\Email\Widget;
 
 use Mailery\Template\Email\Model\EditorWidgetInterface;
-use Yiisoft\Widget\Widget as BaseWidget;
+use Yiisoft\Widget\Widget;
 use Yiisoft\Form\Widget\Field;
 use Yiisoft\Form\FormModelInterface;
 
-class TextAreaEditorWidget extends BaseWidget implements EditorWidgetInterface
+class TextAreaEditorWidget extends Widget implements EditorWidgetInterface
 {
 
     /**
