@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 use Mailery\Template\Email\Model\TemplateType;
 use Mailery\Template\Email\Model\TextAreaEditor;
-use Yiisoft\Factory\Definition\Reference;
+use Yiisoft\Definitions\Reference;
 
 return [
     'maileryio/mailery-template' => [
@@ -28,7 +28,7 @@ return [
     ],
 
     'yiisoft/yii-cycle' => [
-        'annotated-entity-paths' => [
+        'entity-paths' => [
             '@vendor/maileryio/mailery-template-email/src/Entity',
         ],
     ],

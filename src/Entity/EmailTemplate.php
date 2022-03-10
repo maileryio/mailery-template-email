@@ -2,41 +2,31 @@
 
 namespace Mailery\Template\Email\Entity;
 
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Inheritance\SingleTable;
 use Mailery\Template\Entity\Template;
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityTrait;
 use Mailery\Common\Entity\RoutableEntityInterface;
 
-/**
- * @Cycle\Annotated\Annotation\Entity
- */
+#[Entity(table: 'templates')]
+#[SingleTable(value: EmailTemplate::class)]
 class EmailTemplate extends Template implements RoutableEntityInterface, LoggableEntityInterface
 {
     use LoggableEntityTrait;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
-     * @var string
-     */
-    private $htmlContent;
+    #[Column(type: 'string(255)')]
+    private string $htmlEditor;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "text", nullable = true)
-     * @var string
-     */
-    private $textContent;
+    #[Column(type: 'string(255)')]
+    private string $textEditor;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "string")
-     * @var string
-     */
-    private $htmlEditor;
+    #[Column(type: 'text', nullable: true)]
+    private ?string $htmlContent = null;
 
-    /**
-     * @Cycle\Annotated\Annotation\Column(type = "string")
-     * @var string
-     */
-    private $textEditor;
+    #[Column(type: 'text', nullable: true)]
+    private ?string $textContent = null;
 
     /**
      * @return string
