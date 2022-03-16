@@ -7,7 +7,7 @@ use Mailery\Icon\Icon;
 /** @var Psr\Http\Message\ServerRequestInterface $request */
 /** @var Mailery\Template\Email\Entity\EmailTemplate $template */
 /** @var Mailery\Template\Email\Form\TemplateForm $form */
-/** @var string $csrf */
+/** @var Yiisoft\Yii\View\Csrf $csrf */
 
 $this->setTitle('Edit template #' . $template->getId());
 

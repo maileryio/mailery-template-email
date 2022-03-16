@@ -12,7 +12,7 @@ use Yiisoft\Form\Widget\TextArea;
 /** @var Psr\Http\Message\ServerRequestInterface $request */
 /** @var Mailery\Template\Email\Entity\EmailTemplate $template */
 /** @var Mailery\Template\Email\Form\ContentForm $form */
-/** @var string $csrf */
+/** @var Yiisoft\Yii\View\Csrf $csrf */
 /** @var bool $submitted */
 
 $this->setTitle($template->getName());
