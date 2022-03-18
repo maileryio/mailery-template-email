@@ -20,70 +20,45 @@ use Psr\Http\Message\ResponseFactoryInterface as ResponseFactory;
 use Mailery\Template\Repository\TemplateRepository;
 use Mailery\Brand\BrandLocatorInterface;
 use Yiisoft\Session\Flash\FlashInterface;
+use Yiisoft\Router\CurrentRoute;
 
 class DefaultController
 {
     /**
-     * @var ViewRenderer
-     */
-    private ViewRenderer $viewRenderer;
-
-    /**
-     * @var ResponseFactory
-     */
-    private ResponseFactory $responseFactory;
-
-    /**
-     * @var UrlGenerator
-     */
-    private UrlGenerator $urlGenerator;
-
-    /**
-     * @var TemplateRepository
-     */
-    private TemplateRepository $templateRepo;
-
-    /**
-     * @var TemplateCrudService
-     */
-    private TemplateCrudService $templateCrudService;
-
-    /**
      * @param ViewRenderer $viewRenderer
      * @param ResponseFactory $responseFactory
      * @param UrlGenerator $urlGenerator
-     * @param BrandLocatorInterface $brandLocator
      * @param TemplateRepository $templateRepo
      * @param TemplateCrudService $templateCrudService
+     * @param BrandLocatorInterface $brandLocator
      */
     public function __construct(
-        ViewRenderer $viewRenderer,
-        ResponseFactory $responseFactory,
-        UrlGenerator $urlGenerator,
-        BrandLocatorInterface $brandLocator,
-        TemplateRepository $templateRepo,
-        TemplateCrudService $templateCrudService
+        private ViewRenderer $viewRenderer,
+        private ResponseFactory $responseFactory,
+        private UrlGenerator $urlGenerator,
+        private TemplateRepository $templateRepo,
+        private TemplateCrudService $templateCrudService,
+        BrandLocatorInterface $brandLocator
     ) {
         $this->viewRenderer = $viewRenderer
             ->withController($this)
             ->withViewPath(dirname(dirname(__DIR__)) . '/views');
 
-        $this->responseFactory = $responseFactory;
-        $this->urlGenerator = $urlGenerator;
         $this->templateRepo = $templateRepo->withBrand($brandLocator->getBrand());
         $this->templateCrudService = $templateCrudService->withBrand($brandLocator->getBrand());
     }
 
     /**
      * @param Request $request
+     * @param CurrentRoute $currentRoute
      * @param ValidatorInterface $validator
      * @param ContentForm $form
      * @return Response
      */
-    public function view(Request $request, ValidatorInterface $validator, ContentForm $form): Response
+    public function view(Request $request, CurrentRoute $currentRoute, ValidatorInterface $validator, ContentForm $form): Response
     {
         $body = $request->getParsedBody();
-        $templateId = $request->getAttribute('id');
+        $templateId = $currentRoute->getArgument('id');
         if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
             return $this->responseFactory->createResponse(Status::NOT_FOUND);
         }
@@ -126,15 +101,16 @@ class DefaultController
 
     /**
      * @param Request $request
+     * @param CurrentRoute $currentRoute
      * @param ValidatorInterface $validator
      * @param FlashInterface $flash
      * @param TemplateForm $form
      * @return Response
      */
-    public function edit(Request $request, ValidatorInterface $validator, FlashInterface $flash, TemplateForm $form): Response
+    public function edit(Request $request, CurrentRoute $currentRoute, ValidatorInterface $validator, FlashInterface $flash, TemplateForm $form): Response
     {
         $body = $request->getParsedBody();
-        $templateId = $request->getAttribute('id');
+        $templateId = $currentRoute->getArgument('id');
         if (empty($templateId) || ($template = $this->templateRepo->findByPK($templateId)) === null) {
             return $this->responseFactory->createResponse(Status::NOT_FOUND);
         }

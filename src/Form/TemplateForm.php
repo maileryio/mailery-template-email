@@ -126,8 +126,8 @@ class TemplateForm extends FormModel
     {
         return [
             'name' => [
-                new RequiredHtmlOptions(Required::rule()),
-                new HasLengthHtmlOptions(HasLength::rule()->min(3)->max(255)),
+                Required::rule(),
+                HasLength::rule()->min(3)->max(255),
                 Callback::rule(function ($value) {
                     $result = new Result();
                     $record = $this->templateRepo->findByName($value, $this->template);
@@ -140,11 +140,11 @@ class TemplateForm extends FormModel
                 })
             ],
             'htmlEditor' => [
-                new RequiredHtmlOptions(Required::rule()),
+                Required::rule(),
                 InRange::rule(array_keys($this->getHtmlEditorOptions())),
             ],
             'textEditor' => [
-                new RequiredHtmlOptions(Required::rule()),
+                Required::rule(),
             ],
         ];
     }

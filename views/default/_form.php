@@ -1,36 +1,28 @@
 <?php
 
-use Yiisoft\Html\Html;
 use Yiisoft\Form\Widget\Form;
 
 /** @var Yiisoft\Form\Widget\Field $field */
 /** @var Yiisoft\View\WebView $this */
-/** @var Mailery\Template\Email\Form\TemplateForm $form */
+/** @var Yiisoft\Form\FormModelInterface $form */
 /** @var Yiisoft\Yii\View\Csrf $csrf */
 
 ?>
 <div class="row">
     <div class="col-12 col-xl-4">
         <?= Form::widget()
-            ->options(
-                [
-                    'id' => 'form-template',
-                    'csrf' => $csrf,
-                    'enctype' => 'multipart/form-data',
-                ]
-            )
-            ->begin(); ?>
+                ->csrf($csrf)
+                ->id('template-form')
+                ->begin(); ?>
 
-        <?= $field->config($form, 'name'); ?>
-        <?= $field->config($form, 'htmlEditor')
-            ->dropDownList($form->getHtmlEditorOptions()); ?>
+        <?= $field->text($form, 'name')
+                ->autofocus(); ?>
 
-        <?= Html::submitButton(
-            'Save',
-            [
-                'class' => 'btn btn-primary float-right mt-2',
-            ]
-        ); ?>
+        <?= $field->select($form, 'htmlEditor', ['items()' => [$form->getHtmlEditorOptions()]]); ?>
+
+        <?= $field->submitButton()
+                ->class('btn btn-primary float-right mt-2')
+                ->value('Save'); ?>
 
         <?= Form::end(); ?>
     </div>

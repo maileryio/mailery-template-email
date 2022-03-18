@@ -59,33 +59,23 @@ $this->setTitle($template->getName());
 <div class="row">
     <div class="col-12">
         <?= Form::widget()
-            ->options(
-                [
-                    'id' => 'form-template',
-                    'csrf' => $csrf,
-                    'enctype' => 'multipart/form-data',
-                ]
-            )
-            ->begin(); ?>
+                ->csrf($csrf)
+                ->id('template-form')
+                ->begin(); ?>
 
         <?= $form->getField()
                 ->config($form, 'htmlContent')
-                ->htmlInput();
-        ?>
+                ->htmlInput(); ?>
 
         <?= $form->getField()
                 ->config($form, 'textContent')
                 ->textInput([
-                    'rows' => 10,
-                ]);
-        ?>
+                    'rows()' => [10]
+                ]); ?>
 
-        <?= Html::submitButton(
-            'Save',
-            [
-                'class' => 'btn btn-primary float-right mt-2',
-            ]
-        ); ?>
+        <?= $field->submitButton()
+                ->class('btn btn-primary float-right mt-2')
+                ->value('Save'); ?>
 
         <?= Form::end(); ?>
     </div>

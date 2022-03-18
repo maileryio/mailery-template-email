@@ -52,8 +52,7 @@ class TextAreaEditorWidget extends Widget implements EditorWidgetInterface
     protected function run(): string
     {
         return Field::widget()
-            ->config($this->data, $this->attribute)
-            ->textArea($this->options);
+            ->textArea($this->data, $this->attribute, $this->options);
     }
 
 }
