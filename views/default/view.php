@@ -3,9 +3,7 @@
 use Mailery\Activity\Log\Widget\ActivityLogLink;
 use Mailery\Icon\Icon;
 use Mailery\Widget\Link\Link;
-use Yiisoft\Html\Html;
 use Yiisoft\Form\Widget\Form;
-use Yiisoft\Form\Widget\TextArea;
 
 /** @var Yiisoft\Form\Widget\Field $field */
 /** @var Yiisoft\Yii\WebView $this */
@@ -67,10 +65,13 @@ $this->setTitle($template->getName());
                 ->config($form, 'htmlContent')
                 ->htmlInput(); ?>
 
+        <div class="mb-4"></div>
+
         <?= $form->getField()
                 ->config($form, 'textContent')
                 ->textInput([
-                    'rows()' => [10]
+                    'rows()' => [10],
+                    'class()' => ['form-control']
                 ]); ?>
 
         <?= $field->submitButton()

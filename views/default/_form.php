@@ -15,8 +15,7 @@ use Yiisoft\Form\Widget\Form;
                 ->id('template-form')
                 ->begin(); ?>
 
-        <?= $field->text($form, 'name')
-                ->autofocus(); ?>
+        <?= $field->text($form, 'name')->autofocus(); ?>
 
         <?= $field->select($form, 'htmlEditor', ['items()' => [$form->getHtmlEditorOptions()]]); ?>
 
