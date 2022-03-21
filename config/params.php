@@ -36,6 +36,15 @@ return [
     'maileryio/mailery-menu-sidebar' => [
         'items' => [
             'templates' => [
+                'items' => [
+                    'templates' => [
+                        'activeRouteNames' => [
+                            '/template/email/view',
+                            '/template/email/create',
+                            '/template/email/edit',
+                        ],
+                    ],
+                ],
                 'activeRouteNames' => [
                     '/template/email/view',
                     '/template/email/create',
