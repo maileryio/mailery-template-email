@@ -14,7 +14,7 @@ $this->setTitle('New email template');
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
             <h1 class="h3">New email template</h1>
             <div class="btn-toolbar float-right">
-                <a class="btn btn-sm btn-outline-secondary mx-sm-1 mb-2" href="<?= $urlGenerator->generate('/template/default/index'); ?>">
+                <a class="btn btn-sm btn-outline-secondary mx-sm-1 mb-2" href="<?= $url->generate('/template/default/index'); ?>">
                     Back
                 </a>
             </div>
