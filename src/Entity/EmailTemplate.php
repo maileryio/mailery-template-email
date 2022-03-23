@@ -10,7 +10,7 @@ use Mailery\Activity\Log\Entity\LoggableEntityTrait;
 use Mailery\Common\Entity\RoutableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
 
-#[Entity(table: 'templates')]
+#[Entity]
 #[SingleTable(value: EmailTemplate::class)]
 class EmailTemplate extends Template implements RoutableEntityInterface, LoggableEntityInterface
 {
@@ -27,11 +27,6 @@ class EmailTemplate extends Template implements RoutableEntityInterface, Loggabl
 
     #[Column(type: 'text', nullable: true)]
     private ?string $textContent = null;
-
-    public function __construct()
-    {
-        $this->type = self::class;
-    }
 
     /**
      * @return string
