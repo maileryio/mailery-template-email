@@ -1,5 +1,6 @@
 <?php
 
+use Mailery\Widget\Select\Select;
 use Yiisoft\Form\Widget\Form;
 
 /** @var Yiisoft\Form\Widget\Field $field */
@@ -17,7 +18,16 @@ use Yiisoft\Form\Widget\Form;
 
         <?= $field->text($form, 'name')->autofocus(); ?>
 
-        <?= $field->select($form, 'htmlEditor', ['items()' => [$form->getHtmlEditorOptions()]]); ?>
+        <?= $field->select(
+                $form,
+                'htmlEditor',
+                [
+                    'class' => Select::class,
+                    'items()' => [$form->getHtmlEditorOptions()],
+                    'clearable()' => [false],
+                    'searchable()' => [false],
+                ]
+            ); ?>
 
         <?= $field->submitButton()
                 ->class('btn btn-primary float-right mt-2')
