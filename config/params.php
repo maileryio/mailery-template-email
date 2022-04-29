@@ -10,14 +10,14 @@ declare(strict_types=1);
  * @copyright Copyright (c) 2020, Mailery (https://mailery.io/)
  */
 
-use Mailery\Template\Email\Model\TemplateType;
+use Mailery\Template\Email\Model\EmailTemplateType;
 use Mailery\Template\Email\Model\TextAreaEditor;
 use Yiisoft\Definitions\Reference;
 
 return [
     'maileryio/mailery-template' => [
         'types' => [
-            Reference::to(TemplateType::class),
+            Reference::to(EmailTemplateType::class),
         ],
     ],
 

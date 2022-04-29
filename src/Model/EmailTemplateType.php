@@ -2,11 +2,20 @@
 
 namespace Mailery\Template\Email\Model;
 
+use Mailery\Template\Entity\Template;
 use Mailery\Template\Model\TemplateTypeInterface;
-use Mailery\Template\Email\Entity\EmailTemplate;
 
-class TemplateType implements TemplateTypeInterface
+class EmailTemplateType implements TemplateTypeInterface
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function getName(): string
+    {
+        return self::class;
+    }
+
     /**
      * @inheritdoc
      */
@@ -40,11 +49,11 @@ class TemplateType implements TemplateTypeInterface
     }
 
     /**
-     * @param object $entity
+     * @param Template $entity
      * @return bool
      */
-    public function isEntitySameType(object $entity): bool
+    public function isEntitySameType(Template $entity): bool
     {
-        return $entity instanceof EmailTemplate;
+        return $entity->getType() === $this->getName();
     }
 }

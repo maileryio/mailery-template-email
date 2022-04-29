@@ -9,11 +9,12 @@ use Mailery\Template\Entity\Template;
 use Mailery\Activity\Log\Entity\LoggableEntityTrait;
 use Mailery\Common\Entity\RoutableEntityInterface;
 use Mailery\Activity\Log\Entity\LoggableEntityInterface;
+use Mailery\Template\Email\Model\EmailTemplateType;
 
 #[Entity(
     table: 'templates',
 )]
-#[SingleTable(value: EmailTemplate::class)]
+#[SingleTable(value: EmailTemplateType::class)]
 class EmailTemplate extends Template implements RoutableEntityInterface, LoggableEntityInterface
 {
     use LoggableEntityTrait;
