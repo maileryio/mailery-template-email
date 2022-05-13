@@ -9,30 +9,29 @@ use Yiisoft\Form\Widget\Form;
 /** @var Yiisoft\Yii\View\Csrf $csrf */
 
 ?>
-<div class="row">
-    <div class="col-12 col-xl-4">
-        <?= Form::widget()
-                ->csrf($csrf)
-                ->id('template-form')
-                ->begin(); ?>
 
-        <?= $field->text($form, 'name')->autofocus(); ?>
+<?= Form::widget()
+        ->csrf($csrf)
+        ->id('template-form')
+        ->begin(); ?>
 
-        <?= $field->select(
-                $form,
-                'htmlEditor',
-                [
-                    'class' => Select::class,
-                    'items()' => [$form->getHtmlEditorOptions()],
-                    'clearable()' => [false],
-                    'searchable()' => [false],
-                ]
-            ); ?>
+<?= $field->text($form, 'name')->autofocus(); ?>
 
-        <?= $field->submitButton()
-                ->class('btn btn-primary float-right mt-2')
-                ->value('Save'); ?>
+<?= $field->select(
+        $form,
+        'htmlEditor',
+        [
+            'class' => Select::class,
+            'items()' => [$form->getHtmlEditorOptions()],
+            'clearable()' => [false],
+            'searchable()' => [false],
+        ]
+    ); ?>
 
-        <?= Form::end(); ?>
-    </div>
-</div>
+<?= $field->textArea($form, 'description', ['rows()' => [5]]); ?>
+
+<?= $field->submitButton()
+        ->class('btn btn-primary float-right mt-2')
+        ->value($form->hasEntity() ? 'Save changes' : 'Add channel'); ?>
+
+<?= Form::end(); ?>

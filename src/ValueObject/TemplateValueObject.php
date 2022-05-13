@@ -14,6 +14,11 @@ class TemplateValueObject
     private string $name;
 
     /**
+     * @var string|null
+     */
+    private ?string $description = null;
+
+    /**
      * @var string
      */
     private string $htmlEditor;
@@ -42,6 +47,7 @@ class TemplateValueObject
         $new = new self();
 
         $new->name = $form->getName();
+        $new->description = $form->getDescription();
         $new->htmlEditor = $form->getHtmlEditor();
         $new->textEditor = $form->getTextEditor();
 
@@ -67,6 +73,14 @@ class TemplateValueObject
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 
     /**

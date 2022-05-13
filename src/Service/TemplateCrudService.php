@@ -49,6 +49,7 @@ class TemplateCrudService
         $template = (new EmailTemplate())
             ->setBrand($this->brand)
             ->setName($valueObject->getName())
+            ->setDescription($valueObject->getDescription())
             ->setHtmlEditor($valueObject->getHtmlEditor())
             ->setTextEditor($valueObject->getTextEditor())
         ;
@@ -67,6 +68,7 @@ class TemplateCrudService
     {
         $template = $template
             ->setName($valueObject->getName())
+            ->setDescription($valueObject->getDescription())
             ->setHtmlEditor($valueObject->getHtmlEditor())
             ->setTextEditor($valueObject->getTextEditor())
         ;

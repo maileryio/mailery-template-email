@@ -8,9 +8,7 @@ use Mailery\Template\Repository\TemplateRepository;
 use Mailery\Template\Email\Model\EditorList;
 use Mailery\Template\Email\Model\TextAreaEditor;
 use Yiisoft\Form\FormModel;
-use Yiisoft\Form\HtmlOptions\RequiredHtmlOptions;
 use Yiisoft\Validator\Rule\Required;
-use Yiisoft\Form\HtmlOptions\HasLengthHtmlOptions;
 use Yiisoft\Validator\Rule\HasLength;
 use Yiisoft\Validator\Rule\InRange;
 use Yiisoft\Validator\Rule\Callback;
@@ -27,6 +25,11 @@ class TemplateForm extends FormModel
     /**
      * @var string|null
      */
+    private ?string $description = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $htmlEditor = null;
 
     /**
@@ -37,12 +40,12 @@ class TemplateForm extends FormModel
     /**
      * @var EmailTemplate|null
      */
-    private ?EmailTemplate $template = null;
+    private ?EmailTemplate $entity = null;
 
     /**
      * @var TemplateRepository
      */
-    private TemplateRepository $templateRepo;
+    private TemplateRepository $entityRepo;
 
     /**
      * @var EditorList
@@ -51,17 +54,17 @@ class TemplateForm extends FormModel
 
     /**
      * @param BrandLocator $brandLocator
-     * @param TemplateRepository $templateRepo
+     * @param TemplateRepository $entityRepo
      * @param EditorList $editorList
      * @param TextAreaEditor $textAreaEditor
      */
     public function __construct(
         BrandLocator $brandLocator,
-        TemplateRepository $templateRepo,
+        TemplateRepository $entityRepo,
         EditorList $editorList,
         TextAreaEditor $textAreaEditor
     ) {
-        $this->templateRepo = $templateRepo->withBrand($brandLocator->getBrand());
+        $this->entityRepo = $entityRepo->withBrand($brandLocator->getBrand());
         $this->editorList = $editorList;
         $this->textEditor = $textAreaEditor->getName();
 
@@ -69,18 +72,27 @@ class TemplateForm extends FormModel
     }
 
     /**
-     * @param EmailTemplate $template
+     * @param EmailTemplate $entity
      * @return self
      */
-    public function withEntity(EmailTemplate $template): self
+    public function withEntity(EmailTemplate $entity): self
     {
         $new = clone $this;
-        $new->template = $template;
-        $new->name = $template->getName();
-        $new->htmlEditor = $template->getHtmlEditor();
-        $new->textEditor = $template->getTextEditor();
+        $new->entity = $entity;
+        $new->name = $entity->getName();
+        $new->description = $entity->getDescription();
+        $new->htmlEditor = $entity->getHtmlEditor();
+        $new->textEditor = $entity->getTextEditor();
 
         return $new;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasEntity(): bool
+    {
+        return $this->entity !== null;
     }
 
     /**
@@ -89,6 +101,14 @@ class TemplateForm extends FormModel
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 
     /**
@@ -114,6 +134,7 @@ class TemplateForm extends FormModel
     {
         return [
             'name' => 'Template name',
+            'description' => 'Description (optional)',
             'htmlEditor' => 'HTML editor',
             'textEditor' => 'Text editor',
         ];
@@ -130,7 +151,7 @@ class TemplateForm extends FormModel
                 HasLength::rule()->min(3)->max(255),
                 Callback::rule(function ($value) {
                     $result = new Result();
-                    $record = $this->templateRepo->findByName($value, $this->template);
+                    $record = $this->entityRepo->findByName($value, $this->entity);
 
                     if ($record !== null) {
                         $result->addError('Template with this name already exists.');
