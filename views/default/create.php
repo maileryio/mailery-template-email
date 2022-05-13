@@ -5,7 +5,6 @@
 /** @var Psr\Http\Message\ServerRequestInterface $request */
 /** @var Mailery\Template\Email\Form\TemplateForm $form */
 /** @var Yiisoft\Yii\View\Csrf $csrf */
-/** @var bool $submitted */
 
 $this->setTitle('New email template');
 

@@ -11,7 +11,6 @@ use Yiisoft\Form\Widget\Form;
 /** @var Mailery\Template\Email\Entity\EmailTemplate $template */
 /** @var Mailery\Template\Email\Form\ContentForm $form */
 /** @var Yiisoft\Yii\View\Csrf $csrf */
-/** @var bool $submitted */
 
 $this->setTitle($template->getName());
 
