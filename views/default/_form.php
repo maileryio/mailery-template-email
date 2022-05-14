@@ -32,6 +32,6 @@ use Yiisoft\Form\Widget\Form;
 
 <?= $field->submitButton()
         ->class('btn btn-primary float-right mt-2')
-        ->value($form->hasEntity() ? 'Save changes' : 'Add channel'); ?>
+        ->value($form->hasEntity() ? 'Save changes' : 'Add template'); ?>
 
 <?= Form::end(); ?>
