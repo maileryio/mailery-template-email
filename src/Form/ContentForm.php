@@ -77,7 +77,7 @@ class ContentForm extends FormModel
     {
         return [
             'htmlContent' => 'HTML content',
-            'textContent' => 'Plain text content',
+            'textContent' => 'Plain text version',
         ];
     }
 

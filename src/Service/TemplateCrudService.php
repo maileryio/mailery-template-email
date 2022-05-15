@@ -69,8 +69,6 @@ class TemplateCrudService
         $template = $template
             ->setName($valueObject->getName())
             ->setDescription($valueObject->getDescription())
-            ->setHtmlEditor($valueObject->getHtmlEditor())
-            ->setTextEditor($valueObject->getTextEditor())
         ;
 
         (new EntityWriter($this->orm))->write([$template]);

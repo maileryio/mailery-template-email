@@ -25,6 +25,7 @@ use Yiisoft\Form\Widget\Form;
             'items()' => [$form->getHtmlEditorOptions()],
             'clearable()' => [false],
             'searchable()' => [false],
+            'disable()' => [$form->hasEntity()],
         ]
     ); ?>
 
