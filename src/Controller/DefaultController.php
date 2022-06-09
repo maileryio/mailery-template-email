@@ -128,10 +128,6 @@ class DefaultController
                 ],
                 true
             );
-
-            return $this->responseFactory
-                ->createResponse(Status::FOUND)
-                ->withHeader(Header::LOCATION, $this->urlGenerator->generate('/template/email/view', ['id' => $template->getId()]));
         }
 
         return $this->viewRenderer->render('edit', compact('form', 'template'));
