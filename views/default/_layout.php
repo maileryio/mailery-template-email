@@ -21,7 +21,7 @@ $this->setTitle($template->getName());
                     <div class="col-md">
                         <h4 class="mb-0">Template #<?= $template->getId(); ?></h4>
                         <p class="mt-1 mb-0 small">
-                            Changed at <?= DateTimeFormat::widget()->dateTime($template->getUpdatedAt())->run() ?>
+                            Changed at <?= DateTimeFormat::widget()->dateTime($template->getUpdatedAt()) ?>
                         </p>
                     </div>
                     <div class="col-auto">
