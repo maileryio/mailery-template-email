@@ -2,7 +2,7 @@
 
 namespace Mailery\Template\Email\Service;
 
-use Cycle\ORM\ORMInterface;
+use Cycle\ORM\EntityManagerInterface;
 use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Email\ValueObject\TemplateValueObject;
 use Mailery\Brand\Entity\Brand;
@@ -11,22 +11,16 @@ use Yiisoft\Yii\Cycle\Data\Writer\EntityWriter;
 class TemplateCrudService
 {
     /**
-     * @var ORMInterface
-     */
-    private ORMInterface $orm;
-
-    /**
      * @var Brand
      */
     private Brand $brand;
 
     /**
-     * @param ORMInterface $orm
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(ORMInterface $orm)
-    {
-        $this->orm = $orm;
-    }
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {}
 
     /**
      * @param Brand $brand
@@ -54,7 +48,7 @@ class TemplateCrudService
             ->setTextEditor($valueObject->getTextEditor())
         ;
 
-        (new EntityWriter($this->orm))->write([$template]);
+        (new EntityWriter($this->entityManager))->write([$template]);
 
         return $template;
     }
@@ -71,7 +65,7 @@ class TemplateCrudService
             ->setDescription($valueObject->getDescription())
         ;
 
-        (new EntityWriter($this->orm))->write([$template]);
+        (new EntityWriter($this->entityManager))->write([$template]);
 
         return $template;
     }
@@ -88,7 +82,7 @@ class TemplateCrudService
             ->setTextContent($valueObject->getTextContent())
         ;
 
-        (new EntityWriter($this->orm))->write([$template]);
+        (new EntityWriter($this->entityManager))->write([$template]);
 
         return $template;
     }
@@ -99,7 +93,7 @@ class TemplateCrudService
      */
     public function delete(EmailTemplate $template): bool
     {
-        (new EntityWriter($this->orm))->delete([$template]);
+        (new EntityWriter($this->entityManager))->delete([$template]);
 
         return true;
     }

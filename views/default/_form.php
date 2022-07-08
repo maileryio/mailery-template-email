@@ -1,38 +1,38 @@
 <?php
 
 use Mailery\Widget\Select\Select;
-use Yiisoft\Form\Widget\Form;
+use Yiisoft\Html\Tag\Form;
+use Yiisoft\Form\Field;
 
-/** @var Yiisoft\Form\Widget\Field $field */
 /** @var Yiisoft\View\WebView $this */
 /** @var Yiisoft\Form\FormModelInterface $form */
 /** @var Yiisoft\Yii\View\Csrf $csrf */
 
 ?>
 
-<?= Form::widget()
+<?= Form::tag()
         ->csrf($csrf)
         ->id('template-form')
-        ->begin(); ?>
+        ->post()
+        ->open(); ?>
 
-<?= $field->text($form, 'name')->autofocus(); ?>
+<?= Field::text($form, 'name')->autofocus(); ?>
 
-<?= $field->select(
+<?= Field::input(
+        Select::class,
         $form,
         'htmlEditor',
         [
-            'class' => Select::class,
-            'items()' => [$form->getHtmlEditorOptions()],
+            'optionsData()' => [$form->getHtmlEditorOptions()],
             'clearable()' => [false],
             'searchable()' => [false],
             'disable()' => [$form->hasEntity()],
         ]
     ); ?>
 
-<?= $field->textArea($form, 'description', ['rows()' => [5]]); ?>
+<?= Field::textarea($form, 'description', ['rows()' => [5]]); ?>
 
-<?= $field->submitButton()
-        ->class('btn btn-primary float-right mt-2')
-        ->value($form->hasEntity() ? 'Save changes' : 'Add template'); ?>
+<?= Field::submitButton()
+        ->content($form->hasEntity() ? 'Save changes' : 'Add template'); ?>
 
-<?= Form::end(); ?>
+<?= Form::tag()->close(); ?>

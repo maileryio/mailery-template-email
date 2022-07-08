@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-/** @var Yiisoft\Form\Widget\Field $field */
 /** @var Yiisoft\Yii\WebView $this */
 /** @var Psr\Http\Message\ServerRequestInterface $request */
 /** @var Mailery\Template\Email\Form\TemplateForm $form */
@@ -34,7 +33,7 @@ $this->setTitle('New email template');
     <div class="col-12">
         <div class="card mb-3">
             <div class="card-body">
-                <?= $this->render('_form', compact('csrf', 'field', 'form')) ?>
+                <?= $this->render('_form', compact('csrf', 'form')) ?>
             </div>
         </div>
     </div>

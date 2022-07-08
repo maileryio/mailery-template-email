@@ -4,7 +4,7 @@ namespace Mailery\Template\Email\Widget;
 
 use Mailery\Template\Email\Model\EditorWidgetInterface;
 use Yiisoft\Widget\Widget;
-use Yiisoft\Form\Widget\Field;
+use Yiisoft\Form\Field;
 use Yiisoft\Form\FormModelInterface;
 
 class TextAreaEditorWidget extends Widget implements EditorWidgetInterface
@@ -51,8 +51,7 @@ class TextAreaEditorWidget extends Widget implements EditorWidgetInterface
      */
     protected function run(): string
     {
-        return Field::widget()
-            ->textArea($this->data, $this->attribute, $this->options);
+        return Field::textarea($this->data, $this->attribute, $this->options);
     }
 
 }
