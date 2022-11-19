@@ -3,6 +3,7 @@
 use Mailery\Widget\Select\Select;
 use Yiisoft\Html\Tag\Form;
 use Yiisoft\Form\Field;
+use Mailery\Web\Vue\Directive;
 
 /** @var Yiisoft\View\WebView $this */
 /** @var Yiisoft\Form\FormModelInterface $form */
@@ -30,7 +31,7 @@ use Yiisoft\Form\Field;
         ]
     ); ?>
 
-<?= Field::textarea($form, 'description', ['rows()' => [5]]); ?>
+<?= Directive::pre(Field::textarea($form, 'description', ['rows()' => [5]])); ?>
 
 <?= Field::submitButton()
         ->content($form->hasEntity() ? 'Save changes' : 'Add template'); ?>

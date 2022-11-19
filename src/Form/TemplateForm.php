@@ -5,7 +5,7 @@ namespace Mailery\Template\Email\Form;
 use Mailery\Brand\BrandLocatorInterface as BrandLocator;
 use Mailery\Template\Email\Entity\EmailTemplate;
 use Mailery\Template\Repository\TemplateRepository;
-use Mailery\Template\Email\Model\EditorList;
+use Mailery\Template\Editor\EditorList;
 use Mailery\Template\Email\Model\TextAreaEditor;
 use Yiisoft\Form\FormModel;
 use Yiisoft\Validator\Rule\Required;

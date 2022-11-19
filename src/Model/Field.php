@@ -3,7 +3,7 @@
 namespace Mailery\Template\Email\Model;
 
 use Mailery\Template\Entity\Template;
-use Mailery\Template\Email\Model\EditorList;
+use Mailery\Template\Editor\EditorList;
 use Yiisoft\Widget\Widget;
 use Yiisoft\Form\FormModelInterface;
 

@@ -3,6 +3,7 @@
 use Yiisoft\Yii\Widgets\ContentDecorator;
 use Yiisoft\Html\Tag\Form;
 use Yiisoft\Form\Field;
+use Mailery\Web\Vue\Directive;
 
 /** @var Yiisoft\Yii\WebView $this */
 /** @var Psr\Http\Message\ServerRequestInterface $request */
@@ -37,12 +38,12 @@ $this->setTitle($template->getName());
 
         <div class="mb-4"></div>
 
-        <?= $form->getField()
+        <?= Directive::pre($form->getField()
                 ->config($form, 'textContent')
                 ->textInput([
                     'rows()' => [10],
                     'inputClass()' => ['form-control']
-                ]); ?>
+                ])); ?>
 
         <?= Field::submitButton()
                 ->content('Save changes'); ?>

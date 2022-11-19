@@ -2,9 +2,9 @@
 
 namespace Mailery\Template\Email\Model;
 
-use Mailery\Template\Email\Model\EditorInterface;
+use Mailery\Template\Editor\EditorInterface;
+use Mailery\Template\Editor\EditorWidgetInterface;
 use Mailery\Template\Email\Widget\TextAreaEditorWidget;
-use Mailery\Template\Email\Model\EditorWidgetInterface;
 
 class TextAreaEditor implements EditorInterface
 {

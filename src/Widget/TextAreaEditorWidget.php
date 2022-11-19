@@ -2,10 +2,11 @@
 
 namespace Mailery\Template\Email\Widget;
 
-use Mailery\Template\Email\Model\EditorWidgetInterface;
+use Mailery\Template\Editor\EditorWidgetInterface;
 use Yiisoft\Widget\Widget;
 use Yiisoft\Form\Field;
 use Yiisoft\Form\FormModelInterface;
+use Mailery\Web\Vue\Directive;
 
 class TextAreaEditorWidget extends Widget implements EditorWidgetInterface
 {
@@ -51,7 +52,7 @@ class TextAreaEditorWidget extends Widget implements EditorWidgetInterface
      */
     protected function run(): string
     {
-        return Field::textarea($this->data, $this->attribute, $this->options);
+        return Directive::pre(Field::textarea($this->data, $this->attribute, $this->options));
     }
 
 }
