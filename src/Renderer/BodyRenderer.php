@@ -12,9 +12,9 @@ class BodyRenderer implements BodyRendererInterface
 {
 
     /**
-     * @var Context
+     * @var ContextInterface
      */
-    private Context $context;
+    private ContextInterface $context;
 
     /**
      * @param Environment $twig
@@ -40,21 +40,10 @@ class BodyRenderer implements BodyRendererInterface
     public function render(Message $message): void
     {
         if (!$message instanceof Email) {
-            return;
+            throw new \RuntimeException(sprintf('The message must be instance of %s', Email::class));
         }
 
-        $context = $this->context->toArray();
-
-        if (isset($context['email'])) {
-            throw new \InvalidArgumentException(sprintf('A "%s" context cannot have an "email" entry as this is a reserved variable.', get_debug_type($message)));
-        }
-
-        $vars = array_merge(
-            $context,
-            [
-                'email' => new WrappedEmail($message),
-            ]
-        );
+        $vars = $this->context->toArray();
 
         $message->subject(
             $this->twig->createTemplate($message->getSubject())->render($vars)

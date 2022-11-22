@@ -4,7 +4,7 @@ namespace Mailery\Template\Email\Renderer;
 
 use Symfony\Component\Mime\Email;
 
-class WrappedEmail
+class WrappedMessage
 {
 
     /**
