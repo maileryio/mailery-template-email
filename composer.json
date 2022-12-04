@@ -19,15 +19,17 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4",
+        "egulias/email-validator": "^3.2",
         "foxy/foxy": "^1.0",
         "maileryio/mailery-template": "dev-master",
         "maileryio/mailery-template-email-ckeditor": "dev-master",
-        "maileryio/widget-select": "dev-master"
+        "maileryio/widget-select": "dev-master",
+        "symfony/mime": "^6.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "phan/phan": "^2.4",
-        "friendsofphp/php-cs-fixer": "^2.16"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -42,7 +44,9 @@
     "scripts": {
         "lint": "php-cs-fixer fix --diff --dry-run",
         "fix": "php-cs-fixer fix",
-        "phan": "phan --progress-bar -o analysis.txt"
+        "phan": "phan --progress-bar -o analysis.txt",
+        "test": "phpunit --testdox --no-interaction",
+        "test-watch": "phpunit-watcher watch"
     },
     "extra": {
         "branch-alias": {
@@ -58,6 +62,9 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "foxy/foxy": false
+        }
     }
 }

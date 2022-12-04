@@ -3,10 +3,13 @@
 namespace Mailery\Template\Email\Renderer;
 
 use Mailery\Template\Renderer\BodyRendererInterface;
+use Mailery\Template\Renderer\Context;
 use Mailery\Template\Renderer\ContextInterface;
+use Mailery\Template\Email\Renderer\WrappedMessage;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Message;
 use Twig\Environment;
+use Twig\NodeVisitor\NodeVisitorInterface;
 
 class BodyRenderer implements BodyRendererInterface
 {
@@ -21,7 +24,9 @@ class BodyRenderer implements BodyRendererInterface
      */
     public function __construct(
         private Environment $twig
-    ) {}
+    ) {
+        $this->context = new Context();
+    }
 
     /**
      * @inheritdoc
@@ -37,25 +42,48 @@ class BodyRenderer implements BodyRendererInterface
     /**
      * @inheritdoc
      */
+    public function withNodeVisitor(NodeVisitorInterface $visitor): self
+    {
+        $new = clone $this;
+        $new->twig->addNodeVisitor($visitor);
+
+        return $new;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function render(Message $message): void
     {
         if (!$message instanceof Email) {
             throw new \RuntimeException(sprintf('The message must be instance of %s', Email::class));
         }
 
-        $vars = $this->context->toArray();
+        if ($this->context->has('message')) {
+            throw new \RuntimeException('A context cannot have an "message" entry as this is a reserved variable.');
+        }
 
-        $message->subject(
-            $this->twig->createTemplate($message->getSubject())->render($vars)
-        );
+        $vars = $this->context
+            ->add('message', new WrappedMessage($message))
+            ->toArray();
 
-        $message->text(
-            $this->twig->createTemplate($message->getTextBody())->render($vars)
-        );
+        if (($subject = $message->getSubject()) !== null) {
+            $message->subject(
+                $this->twig->createTemplate($subject)->render($vars)
+            );
+        }
 
-        $message->html(
-            $this->twig->createTemplate($message->getHtmlBody())->render($vars)
-        );
+        if (($textBody = $message->getTextBody()) !== null) {
+            $message->text(
+                $this->twig->createTemplate($textBody)->render($vars)
+            );
+        }
+
+        if (($htmlBody = $message->getHtmlBody()) !== null) {
+            $message->html(
+                $this->twig->createTemplate($htmlBody)->render($vars)
+            );
+        }
     }
 
 }
