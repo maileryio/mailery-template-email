@@ -42,7 +42,7 @@ class BodyRenderer implements BodyRendererInterface
     /**
      * @inheritdoc
      */
-    public function withNodeVisitor(NodeVisitorInterface $visitor): self
+    public function addNodeVisitor(NodeVisitorInterface $visitor): self
     {
         $new = clone $this;
         $new->twig->addNodeVisitor($visitor);
